@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="#D6D6D6"
+    android:textAlignment="textEnd"
+    app:layout_anchorGravity="center"
+    tools:context=".MainActivity3">
+
+    <LinearLayout
+        android:layout_width="391dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            tools:visibility="gone">
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="119dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:lineSpacingExtra="-4sp"
+                android:paddingEnd="10dp"
+                android:singleLine="false"
+                android:text="8:00 AM to 10:00 AM"
+                android:textAlignment="textEnd"
+                android:textColor="#0B0B0B"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/button9"
+                android:layout_width="234dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="#C1C1C1"
+                android:fontFamily="sans-serif-smallcaps"
+                android:singleLine="false"
+                android:text="WAKE UP!"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            tools:visibility="gone">
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="99dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:lineSpacingExtra="-4sp"
+                android:paddingEnd="10dp"
+                android:singleLine="false"
+                android:text="8:00 AM to 10:00 AM"
+                android:textAlignment="textEnd"
+                android:textColor="#0B0B0B"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/button8"
+                android:layout_width="234dp"
+                android:layout_height="141dp"
+                android:layout_gravity="center"
+                android:backgroundTint="#C1C1C1"
+                android:fontFamily="sans-serif-smallcaps"
+                android:singleLine="false"
+                android:text="WAKE UP AND GET READY"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="122dp"
+            app:srcCompat="@drawable/scheduledisplaybanner" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="#C1C1C1"
+                android:padding="0dp"
+                android:paddingEnd="0dp"
+                android:text="YESTERDAY"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/button12"
+                android:layout_width="58dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="#32D573"
+                android:padding="0dp"
+                android:paddingEnd="0dp"
+                android:text="TODAY"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/button11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:backgroundTint="#C1C1C1"
+                android:padding="0dp"
+                android:paddingEnd="0dp"
+                android:text="TOMORROW"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:lineSpacingExtra="8sp"
+            android:text="—————————————"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:lineSpacingExtra="8sp"
+            android:text="—————————————"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#3C3C3C"
+            android:text="LOOK AT YOUR SCHEDULES!"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/button9.1"
+            android:layout_width="wrap_content"
+            android:layout_height="59dp"
+            android:layout_gravity="center"
+            android:backgroundTint="#FA3838"
+            android:text="GO BACK!"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
