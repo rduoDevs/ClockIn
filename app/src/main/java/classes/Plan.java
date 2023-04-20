@@ -20,6 +20,7 @@ public class Plan {
     private double endTime;
     private ColorStateList planColor;
     private Schedule parentSchedule;
+    public static final String PLAN_PARAM_FILLER = "*_*";
 
     public Plan(Schedule sched) {
         double[] prelimTimeInfo = sched.findEarliestTimeSlot();
@@ -37,6 +38,33 @@ public class Plan {
         parentSchedule = sched;
         startTime = start;
         endTime = startTime += end;
+    }
+
+    public String serialize() {
+        String newString = ("Name:" + this.name + PLAN_PARAM_FILLER);
+        newString += ("PlanType:" + this.planType + PLAN_PARAM_FILLER);
+        newString += ("StartTime:" + startTime + PLAN_PARAM_FILLER);
+        newString += ("EndTime:" + endTime + PLAN_PARAM_FILLER);
+        return newString;
+    }
+
+    public void deserialize(String val) {
+        String[] values = val.split(PLAN_PARAM_FILLER);
+        for (String string : values) {
+            if (string.contains("Name:")) {
+                String newString = string.replace("Name:", "");
+                this.name = newString;
+            } else if (string.contains("PlanType:")) {
+                String newString = string.replace("PlanType:", "");
+                this.planType = newString;
+            } else if (string.contains("StartTime:")) {
+                String newData = string.replace("StartTime:", "");
+                this.startTime = Integer.parseInt(newData);
+            } else if (string.contains("EndTime:")) {
+                String newData = string.replace("EndTime:", "");
+                this.startTime = Integer.parseInt(newData);
+            }
+        }
     }
 
     // Setter Methods
