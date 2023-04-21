@@ -79,7 +79,55 @@ public class Schedule {
         }
     }
 
-    public void updateFragment() {}
+    public void updateFragment() {
+        Button[] buttonList = {
+            (Button) this.context.findViewById(R.id.ScheduleButton1),
+            (Button) this.context.findViewById(R.id.ScheduleButton2),
+            (Button) this.context.findViewById(R.id.ScheduleButton3),
+            (Button) this.context.findViewById(R.id.ScheduleButton4),
+            (Button) this.context.findViewById(R.id.ScheduleButton5),
+            (Button) this.context.findViewById(R.id.ScheduleButton6),
+            (Button) this.context.findViewById(R.id.ScheduleButton7),
+            (Button) this.context.findViewById(R.id.ScheduleButton8),
+            (Button) this.context.findViewById(R.id.ScheduleButton9),
+            (Button) this.context.findViewById(R.id.ScheduleButton10),
+        };
+        TextView[] textList = {
+            (TextView) this.context.findViewById(R.id.ScheduleText1),
+            (TextView) this.context.findViewById(R.id.ScheduleText2),
+            (TextView) this.context.findViewById(R.id.ScheduleText3),
+            (TextView) this.context.findViewById(R.id.ScheduleText4),
+            (TextView) this.context.findViewById(R.id.ScheduleText5),
+            (TextView) this.context.findViewById(R.id.ScheduleText6),
+            (TextView) this.context.findViewById(R.id.ScheduleText7),
+            (TextView) this.context.findViewById(R.id.ScheduleText8),
+            (TextView) this.context.findViewById(R.id.ScheduleText9),
+            (TextView) this.context.findViewById(R.id.ScheduleText10),
+        };
+        View[] layoutList = {
+            (View) this.context.findViewById(R.id.ScheduleLayout1),
+            (View) this.context.findViewById(R.id.ScheduleLayout2),
+            (View) this.context.findViewById(R.id.ScheduleLayout3),
+            (View) this.context.findViewById(R.id.ScheduleLayout4),
+            (View) this.context.findViewById(R.id.ScheduleLayout5),
+            (View) this.context.findViewById(R.id.ScheduleLayout6),
+            (View) this.context.findViewById(R.id.ScheduleLayout7),
+            (View) this.context.findViewById(R.id.ScheduleLayout8),
+            (View) this.context.findViewById(R.id.ScheduleLayout9),
+            (View) this.context.findViewById(R.id.ScheduleLayout10),
+        };
+        for (View layout : layoutList) {
+            layout.setVisibility(View.GONE);
+        }
+        for (i = 0; i < this.plans.size(); i++) {
+            Plan plan = this.plans.get(i);
+            Button buttonToEdit = buttonList[i];
+            TextView textToEdit = textList[i];
+            buttonToEdit.setText((CharSequence) plan.name);
+            textToEdit.setText();
+            layoutList.get(i).setVisibility(View.VISIBLE);
+        }
+    }
 
     // Returns the earliest time slot available, and the longest duration it can be before the next event
     public double[] findEarliestTimeSlot() {

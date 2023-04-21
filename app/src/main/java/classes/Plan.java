@@ -67,6 +67,10 @@ public class Plan {
         }
     }
 
+    public String stringifyDate() {
+        // TODO: Finalize how date will be done.
+    }
+
     // Setter Methods
     public void setName(String name) {
         this.name = name;
