@@ -40,6 +40,32 @@ public class Plan {
         endTime = startTime += end;
     }
 
+    public String convertToTimestamp() {
+        String moniker1;
+        String moniker2;
+        String result;
+        if (startTime >= 12) {
+            startTime -= 12;
+            moniker1 = " PM";
+        } else {
+            moniker1 = " AM";
+        }
+        if (endTime >= 12) {
+            endTime -= 12;
+            moniker2 = " PM";
+        } else {
+            moniker2 = " AM";
+        }
+
+        int startInt = (int) this.startTime;
+        String minutes1 = startInt + ":" + (int) ((this.startTime - startInt) * 60) + moniker1;
+        int endInt = (int) this.endTime;
+        String minutes2 = endInt + ":" + (int) ((this.endTime - endInt) * 60) + moniker2;
+
+        result = minutes1 + " to " + minutes2;
+        return result;
+    }
+
     public String serialize() {
         String newString = ("Name:" + this.name + PLAN_PARAM_FILLER);
         newString += ("PlanType:" + this.planType + PLAN_PARAM_FILLER);

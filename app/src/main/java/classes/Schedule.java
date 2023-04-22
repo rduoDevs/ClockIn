@@ -124,7 +124,7 @@ public class Schedule {
             Button buttonToEdit = buttonList[i];
             TextView textToEdit = textList[i];
             buttonToEdit.setText((CharSequence) plan.name);
-            textToEdit.setText();
+            textToEdit.setText(plan.convertToTimestamp());
             layoutList.get(i).setVisibility(View.VISIBLE);
         }
     }

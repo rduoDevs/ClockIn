@@ -53,6 +53,15 @@ public class MainActivity2 extends AppCompatActivity {
         themeTextView.setText((CharSequence) preferences.getString("Theme", "Lightly"));
         notificationSwitch.setChecked(preferences.getBoolean("Notifications", true));
         outsideSwitch.setChecked(preferences.getBoolean("ShowOutsideInfo", true));
+        for (Button element : themeButtonList) {
+            if (element.getText().toString() == preferences.getString("Theme", "Lightly")) {
+                element.setBackgroundTintList(darkVal);
+                element.setTypeface(current.getTypeface(), Typeface.BOLD);
+            } else {
+                element.setBackgroundTintList(lightVal);
+                element.setTypeface(current.getTypeface(), Typeface.NORMAL);
+            }
+        }
 
         // Set up preference changes based on input
         for (Button button : themeButtonList) {
