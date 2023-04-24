@@ -28,7 +28,8 @@ public class Plan {
         planType = "Other";
         parentSchedule = sched;
         startTime = prelimTimeInfo[0];
-        endTime = startTime += prelimTimeInfo[1];
+        sched.addPlan(this);
+        endTime = prelimTimeInfo[1];
     }
 
     // Constructs a generic Downtime plan when needed w/time params
@@ -44,23 +45,40 @@ public class Plan {
         String moniker1;
         String moniker2;
         String result;
-        if (startTime >= 12) {
-            startTime -= 12;
+        double startTimeToUse = startTime;
+        double endTimeToUse = endTime;
+        if (startTimeToUse >= 13) {
+            startTimeToUse -= 12;
             moniker1 = " PM";
         } else {
             moniker1 = " AM";
         }
-        if (endTime >= 12) {
-            endTime -= 12;
+        if (endTimeToUse >= 13) {
+            endTimeToUse -= 12;
             moniker2 = " PM";
         } else {
             moniker2 = " AM";
         }
-
-        int startInt = (int) this.startTime;
-        String minutes1 = startInt + ":" + (int) ((this.startTime - startInt) * 60) + moniker1;
-        int endInt = (int) this.endTime;
-        String minutes2 = endInt + ":" + (int) ((this.endTime - endInt) * 60) + moniker2;
+        if (startTimeToUse < 1) {
+            startTimeToUse += 12;
+        }
+        if (endTimeToUse < 1) {
+            endTimeToUse += 12;
+        }
+        int startInt = (int) startTimeToUse;
+        int startMinutes = (int) (((startTimeToUse - startInt) * 60)+.5);
+        String sMinutes = startMinutes + "";
+        if (startMinutes < 10) {
+            sMinutes = "0" + sMinutes;
+        }
+        String minutes1 = startInt + ":" + sMinutes + moniker1;
+        int endInt = (int) endTimeToUse;
+        int endMinutes = (int) (((endTimeToUse - endInt) * 60)+.5);
+        String eMinutes = endMinutes + "";
+        if (endMinutes < 10) {
+            eMinutes = "0" + eMinutes;
+        }
+        String minutes2 = endInt + ":" + eMinutes + moniker2;
 
         result = minutes1 + " to " + minutes2;
         return result;
@@ -95,6 +113,7 @@ public class Plan {
 
     public String stringifyDate() {
         // TODO: Finalize how date will be done.
+        return "";
     }
 
     // Setter Methods

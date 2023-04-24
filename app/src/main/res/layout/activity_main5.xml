@@ -3,26 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".MainActivity5">
 
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="672dp"
-        android:fontFamily="serif"
-        android:lineSpacingExtra="8sp"
-        android:text="—————————————"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/newScheduleContainer"
+        android:name="com.example.clockitcurrent.Test"
+        android:layout_width="368dp"
+        android:layout_height="134dp"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/textView15"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button13" />
+        tools:layout="@layout/fragment_test" />
 
     <TextView
         android:id="@+id/textView15"
@@ -61,14 +55,277 @@
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="356dp"
-        android:layout_height="113dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="706dp"
+        android:layout_width="367dp"
+        android:layout_height="97dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginBottom="670dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintHorizontal_bias="0.432"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/makeschedule" />
+
+    <Button
+        android:id="@+id/newPlanButton"
+        android:layout_width="225dp"
+        android:layout_height="52dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="118dp"
+        android:backgroundTint="#36DA6D"
+        android:text="Add New Plan!"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/newPlanButton2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.382"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scheduleNamer" />
+
+    <Button
+        android:id="@+id/newPlanButton2"
+        android:layout_width="221dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="118dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="118dp"
+        android:layout_marginBottom="3dp"
+        android:backgroundTint="#39AEFD"
+        android:text="SAVE SCHEDULE!"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.375"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newPlanButton" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="205dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="153dp"
+        android:text="Schedule Name:"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="#222222"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/scheduleNamer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.427"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <EditText
+        android:id="@+id/scheduleNamer"
+        android:layout_width="239dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="91dp"
+        android:layout_marginEnd="91dp"
+        android:layout_marginBottom="3dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/newPlanButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.214"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="640dp"
+        android:fontFamily="serif"
+        android:lineSpacingExtra="8sp"
+        android:text="—————————————"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+ />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="379dp"
+        android:layout_height="188dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="17dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/newScheduleContainer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newPlanButton2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView172"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="10dp"
+                android:text="Plan Name:"
+                android:textColor="#151515"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/planNamer"
+                android:layout_width="242dp"
+                android:layout_height="55dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Name" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView171"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="10dp"
+                android:text="Plan Type:"
+                android:textAlignment="textEnd"
+                android:textColor="#151515"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/planTypeSpinner"
+                android:layout_width="199dp"
+                android:layout_height="36dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView1713"
+                android:layout_width="97dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="10dp"
+                android:text="Starts:"
+                android:textAlignment="textEnd"
+                android:textColor="#151515"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/startHourSpinner"
+                android:layout_width="88dp"
+                android:layout_height="35dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textView166"
+                android:layout_width="28dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="10dp"
+                android:text=":"
+                android:textAlignment="textEnd"
+                android:textColor="#151515"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/startMinuteSpinner"
+                android:layout_width="88dp"
+                android:layout_height="39dp"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/startAMSpinner"
+                android:layout_width="94dp"
+                android:layout_height="39dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView173"
+                android:layout_width="92dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="10dp"
+                android:text="Ends:"
+                android:textAlignment="textEnd"
+                android:textColor="#151515"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/endHourSpinner"
+                android:layout_width="83dp"
+                android:layout_height="37dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/textView1636"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingRight="10dp"
+                android:text=":"
+                android:textAlignment="textEnd"
+                android:textColor="#151515"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/endMinuteSpinner"
+                android:layout_width="85dp"
+                android:layout_height="36dp"
+                android:layout_weight="1" />
+
+            <Spinner
+                android:id="@+id/endAMSpinner"
+                android:layout_width="91dp"
+                android:layout_height="37dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

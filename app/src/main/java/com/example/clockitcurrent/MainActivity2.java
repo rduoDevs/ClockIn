@@ -34,6 +34,8 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        ColorStateList lightVal = ColorStateList.valueOf(Color.parseColor("#C1C1C1"));
+        ColorStateList darkVal = ColorStateList.valueOf(Color.parseColor("#232323"));
 
         // Initialize element/obj variables
         themeTextView = (TextView) this.findViewById(R.id.textView10);
@@ -56,10 +58,10 @@ public class MainActivity2 extends AppCompatActivity {
         for (Button element : themeButtonList) {
             if (element.getText().toString() == preferences.getString("Theme", "Lightly")) {
                 element.setBackgroundTintList(darkVal);
-                element.setTypeface(current.getTypeface(), Typeface.BOLD);
+                element.setTypeface(element.getTypeface(), Typeface.BOLD);
             } else {
                 element.setBackgroundTintList(lightVal);
-                element.setTypeface(current.getTypeface(), Typeface.NORMAL);
+                element.setTypeface(element.getTypeface(), Typeface.NORMAL);
             }
         }
 
@@ -69,15 +71,13 @@ public class MainActivity2 extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Button current = (Button) v;
-                    ColorStateList lightVal = ColorStateList.valueOf(Color.parseColor("#C1C1C1"));
-                    ColorStateList darkVal = ColorStateList.valueOf(Color.parseColor("#232323"));
                     for (Button element : themeButtonList) {
                         if (element == current) {
                             element.setBackgroundTintList(darkVal);
-                            element.setTypeface(current.getTypeface(), Typeface.BOLD);
+                            element.setTypeface(element.getTypeface(), Typeface.BOLD);
                         } else {
                             element.setBackgroundTintList(lightVal);
-                            element.setTypeface(current.getTypeface(), Typeface.NORMAL);
+                            element.setTypeface(element.getTypeface(), Typeface.NORMAL);
                         }
                     }
                     themeTextView.setText(current.getText());

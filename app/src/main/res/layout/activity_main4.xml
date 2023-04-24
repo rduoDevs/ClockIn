@@ -36,6 +36,31 @@
             android:text="Create New Schedule Plan!"
             android:textSize="16sp" />
 
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="48dp" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:fontFamily="serif"
+            android:lineSpacingExtra="0sp"
+            android:text="—————————————"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView3"
+            android:name="com.example.clockitcurrent.Test"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            tools:layout="@layout/fragment_test" />
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"

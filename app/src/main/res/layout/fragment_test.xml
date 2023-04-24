@@ -16,16 +16,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/ScheduleOverallLayout"
+            >
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/ScheduleLayout1">
 
                 <TextView
-                    android:id="@+id/textView13"
+                    android:id="@+id/ScheduleText1"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -38,7 +41,7 @@
                     android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/button9"
+                    android:id="@+id/ScheduleButton1"
                     android:layout_width="234dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -55,10 +58,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/ScheduleLayout2">
 
                 <TextView
-                    android:id="@+id/textView15"
+                    android:id="@+id/ScheduleText2"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -71,7 +75,7 @@
                     android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/button11"
+                    android:id="@+id/ScheduleButton2"
                     android:layout_width="234dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -88,10 +92,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/ScheduleLayout3">
 
                 <TextView
-                    android:id="@+id/textView15"
+                    android:id="@+id/ScheduleText3"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -104,7 +109,7 @@
                     android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/button11"
+                    android:id="@+id/ScheduleButton3"
                     android:layout_width="234dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -121,10 +126,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/ScheduleLayout4">
 
                 <TextView
-                    android:id="@+id/textView15"
+                    android:id="@+id/ScheduleText4"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -137,7 +143,7 @@
                     android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/button11"
+                    android:id="@+id/ScheduleButton4"
                     android:layout_width="234dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -154,10 +160,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/ScheduleLayout5">
 
                 <TextView
-                    android:id="@+id/textView14"
+                    android:id="@+id/ScheduleText5"
                     android:layout_width="99dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -170,7 +177,7 @@
                     android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/button10"
+                    android:id="@+id/ScheduleButton5"
                     android:layout_width="234dp"
                     android:layout_height="104dp"
                     android:layout_gravity="center"
@@ -187,10 +194,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/ScheduleLayout6">
 
                 <TextView
-                    android:id="@+id/textView15"
+                    android:id="@+id/ScheduleText6"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -203,7 +211,7 @@
                     android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/button11"
+                    android:id="@+id/ScheduleButton6"
                     android:layout_width="234dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -221,10 +229,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/ScheduleLayout7">
 
                 <TextView
-                    android:id="@+id/textView12"
+                    android:id="@+id/ScheduleText7"
                     android:layout_width="99dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -237,7 +246,7 @@
                     android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/button8"
+                    android:id="@+id/ScheduleButton7"
                     android:layout_width="234dp"
                     android:layout_height="103dp"
                     android:layout_gravity="center"
@@ -254,10 +263,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/ScheduleLayout8">
 
                 <TextView
-                    android:id="@+id/textView16"
+                    android:id="@+id/ScheduleText8"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -270,7 +280,75 @@
                     android:textSize="16sp" />
 
                 <Button
-                    android:id="@+id/button12"
+                    android:id="@+id/ScheduleButton8"
+                    android:layout_width="234dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="#C1C1C1"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:singleLine="false"
+                    android:text="WAKE UP!"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/ScheduleLayout9">
+
+                <TextView
+                    android:id="@+id/ScheduleText9"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="-4sp"
+                    android:paddingEnd="10dp"
+                    android:singleLine="false"
+                    android:text="8:00 AM to 10:00 AM"
+                    android:textAlignment="textEnd"
+                    android:textColor="#0B0B0B"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/ScheduleButton9"
+                    android:layout_width="234dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="#C1C1C1"
+                    android:fontFamily="sans-serif-smallcaps"
+                    android:singleLine="false"
+                    android:text="WAKE UP!"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:id="@+id/ScheduleLayout10">
+
+                <TextView
+                    android:id="@+id/ScheduleText10"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:lineSpacingExtra="-4sp"
+                    android:paddingEnd="10dp"
+                    android:singleLine="false"
+                    android:text="8:00 AM to 10:00 AM"
+                    android:textAlignment="textEnd"
+                    android:textColor="#0B0B0B"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/ScheduleButton10"
                     android:layout_width="234dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

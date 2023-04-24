@@ -1,8 +1,14 @@
 package classes;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.clockitcurrent.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,17 +17,24 @@ import java.util.Set;
 public class Schedule {
     private String name;
     private Context context;
-    private ArrayList<Plan> plans;
+    private Activity viewToUse;
+    public ArrayList<Plan> plans = new ArrayList<Plan>();
     private int date;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
+   /* public static ArrayList<Button> buttonList;
+    public static ArrayList<View> layoutList;
+    public static ArrayList<TextView> textList;
+    */
+    
     public static final String SCHEDULE_FILLER = "$#@";
     public static final String PLAN_FILLER = "!!=_=!!";
 
     // Creating a new schedule based off template.
-    public Schedule(String name, String template, int date, Context context) {
+    public Schedule(String name, String template, int date, Context context, Activity view) {
         this.name = name;
         this.date = date;
+        this.viewToUse = view;
         this.context = context;
         preferences = context.getSharedPreferences(template, Context.MODE_PRIVATE);
         editor = preferences.edit();
@@ -33,9 +46,10 @@ public class Schedule {
     }
 
     // Default, new blank schedule w/no template
-    public Schedule(String name, Context context) {
+    public Schedule(String name, Context context, Activity view) {
         this.name = name;
         this.context = context;
+        this.viewToUse = view;
         this.date = 0;
     }
 
@@ -58,6 +72,7 @@ public class Schedule {
     }
 
     public void deserialize(String serializedString) {
+
         String[] product = serializedString.split(SCHEDULE_FILLER);
         for (String string : product) {
             /* if (string.contains("Name:")) {
@@ -79,59 +94,38 @@ public class Schedule {
         }
     }
 
-    public void updateFragment() {
-        Button[] buttonList = {
-            (Button) this.context.findViewById(R.id.ScheduleButton1),
-            (Button) this.context.findViewById(R.id.ScheduleButton2),
-            (Button) this.context.findViewById(R.id.ScheduleButton3),
-            (Button) this.context.findViewById(R.id.ScheduleButton4),
-            (Button) this.context.findViewById(R.id.ScheduleButton5),
-            (Button) this.context.findViewById(R.id.ScheduleButton6),
-            (Button) this.context.findViewById(R.id.ScheduleButton7),
-            (Button) this.context.findViewById(R.id.ScheduleButton8),
-            (Button) this.context.findViewById(R.id.ScheduleButton9),
-            (Button) this.context.findViewById(R.id.ScheduleButton10),
-        };
-        TextView[] textList = {
-            (TextView) this.context.findViewById(R.id.ScheduleText1),
-            (TextView) this.context.findViewById(R.id.ScheduleText2),
-            (TextView) this.context.findViewById(R.id.ScheduleText3),
-            (TextView) this.context.findViewById(R.id.ScheduleText4),
-            (TextView) this.context.findViewById(R.id.ScheduleText5),
-            (TextView) this.context.findViewById(R.id.ScheduleText6),
-            (TextView) this.context.findViewById(R.id.ScheduleText7),
-            (TextView) this.context.findViewById(R.id.ScheduleText8),
-            (TextView) this.context.findViewById(R.id.ScheduleText9),
-            (TextView) this.context.findViewById(R.id.ScheduleText10),
-        };
-        View[] layoutList = {
-            (View) this.context.findViewById(R.id.ScheduleLayout1),
-            (View) this.context.findViewById(R.id.ScheduleLayout2),
-            (View) this.context.findViewById(R.id.ScheduleLayout3),
-            (View) this.context.findViewById(R.id.ScheduleLayout4),
-            (View) this.context.findViewById(R.id.ScheduleLayout5),
-            (View) this.context.findViewById(R.id.ScheduleLayout6),
-            (View) this.context.findViewById(R.id.ScheduleLayout7),
-            (View) this.context.findViewById(R.id.ScheduleLayout8),
-            (View) this.context.findViewById(R.id.ScheduleLayout9),
-            (View) this.context.findViewById(R.id.ScheduleLayout10),
-        };
+    public void addPlan(Plan plan) {
+        this.plans.add(plan);
+    }
+    public void updateFragment(Button[] buttonList, TextView[] textList, View[] layoutList) {
+
         for (View layout : layoutList) {
-            layout.setVisibility(View.GONE);
+            //System.out.println(layout);
+           layout.setVisibility(View.GONE);
         }
-        for (i = 0; i < this.plans.size(); i++) {
+
+        for (int i = 0; i < this.plans.size(); i++) {
             Plan plan = this.plans.get(i);
-            Button buttonToEdit = buttonList[i];
-            TextView textToEdit = textList[i];
-            buttonToEdit.setText((CharSequence) plan.name);
+            Button buttonToEdit = (Button) buttonList[i];
+            TextView textToEdit = (TextView) textList[i];
+            buttonToEdit.setText((CharSequence) plan.getName());
             textToEdit.setText(plan.convertToTimestamp());
-            layoutList.get(i).setVisibility(View.VISIBLE);
+            layoutList[i].setVisibility(View.VISIBLE);
         }
     }
 
     // Returns the earliest time slot available, and the longest duration it can be before the next event
+    private double  starter = 0;
+    private double ender = 1;
     public double[] findEarliestTimeSlot() {
-        return new double[2];
+        starter ++;
+        ender ++;
+        double[] result = {starter, ender};
+        return result;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public ArrayList<double[]> findOpenSpots() {
