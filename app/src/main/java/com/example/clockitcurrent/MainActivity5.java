@@ -31,6 +31,7 @@ public class MainActivity5 extends AppCompatActivity {
     private Spinner endHourScroll;
     private Spinner endMinuteScroll;
     private Plan currentPlan;
+    private Map<Button, Plan> buttonToPlan = new Map<Button, Plan>();
 
 
 
@@ -130,7 +131,7 @@ public class MainActivity5 extends AppCompatActivity {
         };
 
         Schedule schedule = new Schedule("Test", this, (Activity) this);
-        schedule.updateFragment(buttonList1, textList1, layoutList1);
+        planToButton = schedule.updateFragment(buttonList1, textList1, layoutList1);
 
         Button newPlanButton = this.findViewById(R.id.newPlanButton);
         newPlanButton.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +140,7 @@ public class MainActivity5 extends AppCompatActivity {
                 if (schedule.plans.size() < 10) {
                     Plan plan = new Plan(schedule);
                     currentPlan = plan;
-                    schedule.updateFragment(buttonList1, textList1, layoutList1);
+                    planToButton = schedule.updateFragment(buttonList1, textList1, layoutList1);
                 }
             }
         });
@@ -152,6 +153,20 @@ public class MainActivity5 extends AppCompatActivity {
                 return false;
             }
         });
+
+        public void setSpinnerSetsToPlan() {
+            endAMScroll.setSelection(arr)
+        }
+
+        // Sync up the buttons to be editable when clicked
+        for (Button currentButton : buttonList1) {
+            currentButton.setOnClickListener( new View.OnClickListener() {
+                if (planToButton.get(currentButton) != null) {
+                    currentPlan = plan.planToButton.get(currentButton);
+                    setSpinnerSetsToPlan();
+                }
+            });
+        }
 
         // For Type
         typeScroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){

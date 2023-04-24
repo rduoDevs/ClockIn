@@ -22,6 +22,8 @@ public class Schedule {
     private int date;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
+    private static Map<String, ColorStateList> colorMap;
+    
    /* public static ArrayList<Button> buttonList;
     public static ArrayList<View> layoutList;
     public static ArrayList<TextView> textList;
@@ -30,8 +32,20 @@ public class Schedule {
     public static final String SCHEDULE_FILLER = "$#@";
     public static final String PLAN_FILLER = "!!=_=!!";
 
+    private static Map<String, ColorStateList> getColors() {
+        Map<String, ColorStateList> colorDict = new HashMap<String, ColorStateList>();
+        colorDict.put("Wellbeing", ColorStateList.valueOf(Color.parseColor("#232323")));
+        colorDict.put("School", ColorStateList.valueOf(Color.parseColor("#232323")));
+        colorDict.put("Work", ColorStateList.valueOf(Color.parseColor("#232323")));
+        colorDict.put("Downtime", ColorStateList.valueOf(Color.parseColor("#232323")));
+        colorDict.put("Special!", ColorStateList.valueOf(Color.parseColor("#232323")));
+        colorDict.put("Other", ColorStateList.valueOf(Color.parseColor("#232323")));
+        return colorDict;
+    }
+
     // Creating a new schedule based off template.
     public Schedule(String name, String template, int date, Context context, Activity view) {
+        colorMap = getColors();
         this.name = name;
         this.date = date;
         this.viewToUse = view;
@@ -48,6 +62,7 @@ public class Schedule {
     // Default, new blank schedule w/no template
     public Schedule(String name, Context context, Activity view) {
         this.name = name;
+        this.type = "Other";
         this.context = context;
         this.viewToUse = view;
         this.date = 0;
@@ -97,8 +112,8 @@ public class Schedule {
     public void addPlan(Plan plan) {
         this.plans.add(plan);
     }
-    public void updateFragment(Button[] buttonList, TextView[] textList, View[] layoutList) {
-
+    public Map<Button, Plan> updateFragment(Button[] buttonList, TextView[] textList, View[] layoutList) {
+        Map<Button, Plan> result = new Map<Button, Plan>();
         for (View layout : layoutList) {
             //System.out.println(layout);
            layout.setVisibility(View.GONE);
@@ -107,8 +122,10 @@ public class Schedule {
         for (int i = 0; i < this.plans.size(); i++) {
             Plan plan = this.plans.get(i);
             Button buttonToEdit = (Button) buttonList[i];
+            result.put(buttonToEdit, plan)
             TextView textToEdit = (TextView) textList[i];
             buttonToEdit.setText((CharSequence) plan.getName());
+            buttonToEdit.setBackgroundTintList(colorMap.get(this.type));
             textToEdit.setText(plan.convertToTimestamp());
             layoutList[i].setVisibility(View.VISIBLE);
         }
