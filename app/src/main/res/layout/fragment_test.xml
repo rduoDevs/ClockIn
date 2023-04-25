@@ -179,7 +179,7 @@
                 <Button
                     android:id="@+id/ScheduleButton5"
                     android:layout_width="234dp"
-                    android:layout_height="104dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:backgroundTint="#C1C1C1"
                     android:fontFamily="sans-serif-smallcaps"
@@ -248,7 +248,7 @@
                 <Button
                     android:id="@+id/ScheduleButton7"
                     android:layout_width="234dp"
-                    android:layout_height="103dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:backgroundTint="#C1C1C1"
                     android:fontFamily="sans-serif-smallcaps"

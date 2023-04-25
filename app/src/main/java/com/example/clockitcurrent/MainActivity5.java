@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import classes.Navigator;
 import classes.Plan;
@@ -31,9 +33,58 @@ public class MainActivity5 extends AppCompatActivity {
     private Spinner endHourScroll;
     private Spinner endMinuteScroll;
     private Plan currentPlan;
-    private Map<Button, Plan> buttonToPlan = new Map<Button, Plan>();
+    private Button[] buttonList1;
+    private TextView[] textList1;
+    private View[] layoutList1;
+    private Map<Button, Plan> planToButton = new HashMap<Button, Plan>();
+
+    private ArrayList<String> planTypeList = new ArrayList<String>();
+    private ArrayList<String> minuteList = new ArrayList<String>();
+    private ArrayList<String> hourList = new ArrayList<String>();
 
 
+    private void setSpinnerSetsToPlan() {
+        int hour;
+        int minutes;
+        int endHour;
+        int endMinutes;
+        if (currentPlan != null) {
+            planNamer.setText((CharSequence) currentPlan.getName());
+            hour = (int) currentPlan.getStartTime();
+            minutes = (int) ((currentPlan.getStartTime() - hour) * 60 + 0.5);
+            endHour = (int) currentPlan.getEndTime();
+            endMinutes = (int) ((currentPlan.getEndTime() - endHour) * 60 + 0.5);
+
+            // Set up AM/PM
+            if (currentPlan.getStartTime() >= 12) {
+                startAMScroll.setSelection(1);
+            } else {
+                startAMScroll.setSelection(0);
+            }
+            if (currentPlan.getEndTime() >= 12) {
+                endAMScroll.setSelection(1);
+            } else {
+                endAMScroll.setSelection(0);
+            }
+
+            // Start Set-up
+            startHourScroll.setSelection(hourList.indexOf(String.valueOf(hour)));
+            String minuteString = String.valueOf(minutes);
+            if (minutes < 10) {
+                minuteString = "0" + minuteString;
+            }
+            startMinuteScroll.setSelection(minuteList.indexOf(minuteString));
+
+            // End Set-Up
+            endHourScroll.setSelection(hourList.indexOf(String.valueOf(endHour)));
+            String endMinString = String.valueOf(endMinutes);
+            if (endMinutes < 10) {
+                endMinString = "0" + endMinString;
+            }
+            endMinuteScroll.setSelection(minuteList.indexOf(endMinString));
+            typeScroll.setSelection(planTypeList.indexOf(currentPlan.getType()));
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +103,7 @@ public class MainActivity5 extends AppCompatActivity {
         planNamer = this.findViewById(R.id.planNamer);
         scheduleNamer = this.findViewById(R.id.scheduleNamer);
 
-        ArrayList<String> planTypeList = new ArrayList<String>();
+
         planTypeList.add("Wellbeing");
         planTypeList.add("School");
         planTypeList.add("Work");
@@ -60,14 +111,14 @@ public class MainActivity5 extends AppCompatActivity {
         planTypeList.add("Special!");
         planTypeList.add("Other");
 
-        ArrayList<String> hourList = new ArrayList<String>();
+
         hourList.add("12");
         for (int i = 1; i < 12; i++) {
             hourList.add(i+"");
         }
 
 
-        ArrayList<String> minuteList = new ArrayList<String>();
+
         for (int i = 0; i <= 59; i++) {
             if (i >= 10) {
                 minuteList.add(i + "");
@@ -88,47 +139,46 @@ public class MainActivity5 extends AppCompatActivity {
         addToSpinner(amList, startAMScroll);
         addToSpinner(amList, endAMScroll);
     }
-
     @Override
     protected void onStart() {
         super.onStart();
         View fragView = this.findViewById(R.id.newScheduleContainer);
-        Button[] buttonList1 = {
-                (Button) fragView.findViewById(R.id.ScheduleButton1),
-                (Button) fragView.findViewById(R.id.ScheduleButton2),
-                (Button) fragView.findViewById(R.id.ScheduleButton3),
-                (Button) fragView.findViewById(R.id.ScheduleButton4),
-                (Button) fragView.findViewById(R.id.ScheduleButton5),
-                (Button) fragView.findViewById(R.id.ScheduleButton6),
-                (Button) fragView.findViewById(R.id.ScheduleButton7),
-                (Button) fragView.findViewById(R.id.ScheduleButton8),
-                (Button) fragView.findViewById(R.id.ScheduleButton9),
-                (Button) fragView.findViewById(R.id.ScheduleButton10),
-        };
-        TextView[] textList1 = {
-                (TextView) fragView.findViewById(R.id.ScheduleText1),
-                (TextView) fragView.findViewById(R.id.ScheduleText2),
-                (TextView) fragView.findViewById(R.id.ScheduleText3),
-                (TextView) fragView.findViewById(R.id.ScheduleText4),
-                (TextView) fragView.findViewById(R.id.ScheduleText5),
-                (TextView) fragView.findViewById(R.id.ScheduleText6),
-                (TextView) fragView.findViewById(R.id.ScheduleText7),
-                (TextView) fragView.findViewById(R.id.ScheduleText8),
-                (TextView) fragView.findViewById(R.id.ScheduleText9),
-                (TextView) fragView.findViewById(R.id.ScheduleText10),
-        };
-        View[] layoutList1 = {
-                (View) fragView.findViewById(R.id.ScheduleLayout1),
-                (View) fragView.findViewById(R.id.ScheduleLayout2),
-                (View) fragView.findViewById(R.id.ScheduleLayout3),
-                (View) fragView.findViewById(R.id.ScheduleLayout4),
-                (View) fragView.findViewById(R.id.ScheduleLayout5),
-                (View) fragView.findViewById(R.id.ScheduleLayout6),
-                (View) fragView.findViewById(R.id.ScheduleLayout7),
-                (View) fragView.findViewById(R.id.ScheduleLayout8),
-                (View) fragView.findViewById(R.id.ScheduleLayout9),
-                (View) fragView.findViewById(R.id.ScheduleLayout10),
-        };
+        buttonList1 = new Button[10];
+        buttonList1[0] = (Button) fragView.findViewById(R.id.ScheduleButton1);
+        buttonList1[1] = (Button) fragView.findViewById(R.id.ScheduleButton2);
+        buttonList1[2] = (Button) fragView.findViewById(R.id.ScheduleButton3);
+        buttonList1[3] = (Button) fragView.findViewById(R.id.ScheduleButton4);
+        buttonList1[4] = (Button) fragView.findViewById(R.id.ScheduleButton5);
+        buttonList1[5] = (Button) fragView.findViewById(R.id.ScheduleButton6);
+        buttonList1[6] = (Button) fragView.findViewById(R.id.ScheduleButton7);
+        buttonList1[7] = (Button) fragView.findViewById(R.id.ScheduleButton8);
+        buttonList1[8] = (Button) fragView.findViewById(R.id.ScheduleButton9);
+        buttonList1[9] = (Button) fragView.findViewById(R.id.ScheduleButton10);
+
+        textList1 = new TextView[10];
+        textList1[0] = (TextView) fragView.findViewById(R.id.ScheduleText1);
+        textList1[1] = (TextView) fragView.findViewById(R.id.ScheduleText2);
+        textList1[2] = (TextView) fragView.findViewById(R.id.ScheduleText3);
+        textList1[3] = (TextView) fragView.findViewById(R.id.ScheduleText4);
+        textList1[4] = (TextView) fragView.findViewById(R.id.ScheduleText5);
+        textList1[5] = (TextView) fragView.findViewById(R.id.ScheduleText6);
+        textList1[6] = (TextView) fragView.findViewById(R.id.ScheduleText7);
+        textList1[7] = (TextView) fragView.findViewById(R.id.ScheduleText8);
+        textList1[8] = (TextView) fragView.findViewById(R.id.ScheduleText9);
+        textList1[9] = (TextView) fragView.findViewById(R.id.ScheduleText10);
+
+        layoutList1 = new View[10];
+        layoutList1[0] = (View) fragView.findViewById(R.id.ScheduleLayout1);
+        layoutList1[1] = (View) fragView.findViewById(R.id.ScheduleLayout2);
+        layoutList1[2] = (View) fragView.findViewById(R.id.ScheduleLayout3);
+        layoutList1[3] = (View) fragView.findViewById(R.id.ScheduleLayout4);
+        layoutList1[4] = (View) fragView.findViewById(R.id.ScheduleLayout5);
+        layoutList1[5] = (View) fragView.findViewById(R.id.ScheduleLayout6);
+        layoutList1[6] = (View) fragView.findViewById(R.id.ScheduleLayout7);
+        layoutList1[7] = (View) fragView.findViewById(R.id.ScheduleLayout8);
+        layoutList1[8] = (View) fragView.findViewById(R.id.ScheduleLayout9);
+        layoutList1[9] = (View) fragView.findViewById(R.id.ScheduleLayout10);
+
 
         Schedule schedule = new Schedule("Test", this, (Activity) this);
         planToButton = schedule.updateFragment(buttonList1, textList1, layoutList1);
@@ -140,6 +190,7 @@ public class MainActivity5 extends AppCompatActivity {
                 if (schedule.plans.size() < 10) {
                     Plan plan = new Plan(schedule);
                     currentPlan = plan;
+                    setSpinnerSetsToPlan();
                     planToButton = schedule.updateFragment(buttonList1, textList1, layoutList1);
                 }
             }
@@ -154,16 +205,17 @@ public class MainActivity5 extends AppCompatActivity {
             }
         });
 
-        public void setSpinnerSetsToPlan() {
-            endAMScroll.setSelection(arr)
-        }
+
 
         // Sync up the buttons to be editable when clicked
         for (Button currentButton : buttonList1) {
-            currentButton.setOnClickListener( new View.OnClickListener() {
-                if (planToButton.get(currentButton) != null) {
-                    currentPlan = plan.planToButton.get(currentButton);
-                    setSpinnerSetsToPlan();
+            currentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (planToButton.get(currentButton) != null) {
+                        currentPlan = planToButton.get(currentButton);
+                        setSpinnerSetsToPlan();
+                    }
                 }
             });
         }

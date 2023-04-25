@@ -35,7 +35,7 @@ public class Plan {
     // Constructs a generic Downtime plan when needed w/time params
     public Plan(Schedule sched, double start, double end) {
         name = "Downtime";
-        planType = "Free-time";
+        planType = "Other";
         parentSchedule = sched;
         startTime = start;
         endTime = startTime += end;
@@ -146,10 +146,10 @@ public class Plan {
     public Schedule getSchedule() {
         return this.parentSchedule;
     }
-    public double getStartTime(double time) {
+    public double getStartTime() {
         return this.startTime;
     }
-    public double getEndTime(double time) {
+    public double getEndTime() {
         return this.endTime;
     }
     public ColorStateList getPlanColor() {

@@ -94,7 +94,7 @@
         android:layout_marginTop="1dp"
         android:layout_marginEnd="118dp"
         android:layout_marginBottom="3dp"
-        android:backgroundTint="#39AEFD"
+        android:backgroundTint="#397AFD"
         android:text="SAVE SCHEDULE!"
         android:textSize="20sp"
         android:textStyle="bold"
