@@ -32,6 +32,8 @@ public class MainActivity5 extends AppCompatActivity {
     private Spinner endAMScroll;
     private Spinner endHourScroll;
     private Spinner endMinuteScroll;
+    private Button removePlanButton;
+    private Button saveScheduleButton;
     private Plan currentPlan;
     private Button[] buttonList1;
     private TextView[] textList1;
@@ -49,6 +51,7 @@ public class MainActivity5 extends AppCompatActivity {
         int endHour;
         int endMinutes;
         if (currentPlan != null) {
+            removePlanButton.setVisibility(View.VISIBLE);
             planNamer.setText((CharSequence) currentPlan.getName());
             hour = (int) currentPlan.getStartTime();
             minutes = (int) ((currentPlan.getStartTime() - hour) * 60 + 0.5);
@@ -83,6 +86,16 @@ public class MainActivity5 extends AppCompatActivity {
             }
             endMinuteScroll.setSelection(minuteList.indexOf(endMinString));
             typeScroll.setSelection(planTypeList.indexOf(currentPlan.getType()));
+        } else {
+            removePlanButton.setVisibility(View.GONE);
+            startAMScroll.setSelection(0);
+            startMinuteScroll.setSelection(0);
+            startHourScroll.setSelection(0);
+            endAMScroll.setSelection(0);
+            endHourScroll.setSelection(0);
+            typeScroll.setSelection(0);
+            endMinuteScroll.setSelection(0);
+            planNamer.setText((CharSequence) "No Plan Selected");
         }
     }
 
@@ -102,6 +115,8 @@ public class MainActivity5 extends AppCompatActivity {
         endMinuteScroll = this.findViewById(R.id.endMinuteSpinner);
         planNamer = this.findViewById(R.id.planNamer);
         scheduleNamer = this.findViewById(R.id.scheduleNamer);
+        removePlanButton = this.findViewById(R.id.removePlanButton);
+        saveScheduleButton = this.findViewById(R.id.saveScheduleButton);
 
 
         planTypeList.add("Wellbeing");
@@ -182,8 +197,28 @@ public class MainActivity5 extends AppCompatActivity {
 
         Schedule schedule = new Schedule("Test", this, (Activity) this);
         planToButton = schedule.updateFragment(buttonList1, textList1, layoutList1);
-
         Button newPlanButton = this.findViewById(R.id.newPlanButton);
+
+        removePlanButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentPlan != null) {
+                    int index = schedule.plans.indexOf(currentPlan);
+                    schedule.plans.remove(index);
+                    currentPlan = null;
+                    setSpinnerSetsToPlan();
+                }
+            }
+        });
+
+
+        saveScheduleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                schedule.save();
+            }
+        });
+
         newPlanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -47,7 +47,7 @@ public class Schedule {
         return colorDict;
     }
 
-    // Creating a new schedule based off template.
+    /*// Creating a new schedule based off template.
     public Schedule(String name, String template, int date, Context context, Activity view) {
         this.name = name;
         this.date = date;
@@ -60,8 +60,11 @@ public class Schedule {
             String serialized = preferences.getString("Data", "");
             deserialize(serialized);
         }
+    }*/
+    public static Map<String, Schedule> getSchedules(Context context) {
+        preferences = context.getSharedPreferences("Schedules", Context.MODE_PRIVATE);
+        return preferences.getAll();
     }
-
     // Default, new blank schedule w/no template
     public Schedule(String name, Context context, Activity view) {
         this.name = name;
@@ -70,11 +73,10 @@ public class Schedule {
         this.date = 0;
     }
 
-    public void saveAsTemplate() {
-        preferences = this.context.getSharedPreferences(this.name, Context.MODE_PRIVATE);
+    public void save() {
+        preferences = this.context.getSharedPreferences("Schedules", Context.MODE_PRIVATE);
         editor = preferences.edit();
-        editor.putBoolean("Valid", true);
-        editor.putString("Data", serialize());
+        editor.putString(this.name, serialize());
     }
 
     public String serialize() {
