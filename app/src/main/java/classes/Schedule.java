@@ -121,6 +121,7 @@ public class Schedule {
         this.plans.add(plan);
     }
     public Map<Button, Plan> updateFragment(Button[] buttonList, TextView[] textList, View[] layoutList) {
+        reorganizePlans();
         Map<Button, Plan> result = new HashMap<Button, Plan>();
         for (View layout : layoutList) {
             //System.out.println(layout);
@@ -140,10 +141,43 @@ public class Schedule {
         return result;
     }
 
+    public void reorganizePlans() {
+        double timeToBeat = 24;
+        ArrayList<Plan> planArray = new ArrayList<Plan>();
+        for (int i = 0; i < planArray.size(); i++) {
+            for (Plan planVal : this.plans) {
+                if (planVal.startTime < timeToBeat) {
+                    timeToBeat = planVal.startTime;
+
+                }
+            }
+        }
+    }
+
     // Returns the earliest time slot available, and the longest duration it can be before the next event
     private double  starter = 0;
-    private double ender = 1;
     public double[] findEarliestTimeSlot() {
+        if (this.plans.size() == 0) {
+            double[] result = {0, 1};
+            return result;
+        } else if (this.plans[0].getStartTime > 0) {
+            double[] result = {0, this.plans.get(i).getStartTime()};
+            return result;
+        } else {
+            double duration = 0;
+            double newTime = 0;
+            for (int i = 0; i < this.plans.size() - 1; i++) {
+                if (this.plans.get(i).getEndTime() < this.plans.get(i + 1).getStartTime()) {
+                    double[] result = {this.plans.get(i).getEndTime(), this.plans.get(i).getStartTime() - (this.plans.get(i).getEndTime()};
+                    return result;
+                }
+            }
+            double duration = 1.0;
+            if (24 - this.plans.get(this.plans.size() - 1).getEndTime() < 1) {
+                duration = 24 - this.plans.get(this.plans.size() - 1).getEndTime();
+            }
+            return {this.plans.get(this.plans.size() - 1).getEndTime(), duration};
+        }
         starter ++;
         ender ++;
         double[] result = {starter, ender};
@@ -154,7 +188,4 @@ public class Schedule {
         this.name = name;
     }
 
-    public ArrayList<double[]> findOpenSpots() {
-        return new ArrayList<double[]>();
-    }
 }

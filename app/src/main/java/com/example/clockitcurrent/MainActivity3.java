@@ -49,6 +49,10 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private SharedPreferences fullPreferences;
+    private AlarmManager alarmManager;
+    
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
