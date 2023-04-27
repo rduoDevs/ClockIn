@@ -39,7 +39,8 @@
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="match_parent"
-            android:layout_height="48dp" />
+            android:layout_height="72dp"
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/textView12"
@@ -58,7 +59,7 @@
             android:id="@+id/fragmentContainerView3"
             android:name="com.example.clockitcurrent.Test"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="345dp"
             tools:layout="@layout/fragment_test" />
 
         <TextView

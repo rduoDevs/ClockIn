@@ -33,8 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button13" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button14"
@@ -67,43 +66,6 @@
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/makeschedule" />
 
-    <Button
-        android:id="@+id/newPlanButton"
-        android:layout_width="225dp"
-        android:layout_height="52dp"
-        android:layout_gravity="center"
-        android:layout_marginStart="118dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="118dp"
-        android:backgroundTint="#36DA6D"
-        android:text="Add New Plan!"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/newPlanButton2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.382"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scheduleNamer" />
-
-    <Button
-        android:id="@+id/newPlanButton2"
-        android:layout_width="221dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center"
-        android:layout_marginStart="118dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="118dp"
-        android:layout_marginBottom="3dp"
-        android:backgroundTint="#397AFD"
-        android:text="SAVE SCHEDULE!"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.375"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newPlanButton" />
-
     <TextView
         android:id="@+id/textView13"
         android:layout_width="205dp"
@@ -119,7 +81,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/scheduleNamer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.427"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
@@ -136,7 +98,7 @@
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/newPlanButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.214"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -155,8 +117,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
- />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -327,5 +288,66 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_marginStart="74dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="74dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/saveScheduleButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scheduleNamer"
+        app:layout_constraintVertical_bias="0.263">
+
+        <Button
+            android:id="@+id/newPlanButton"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:backgroundTint="#36DA6D"
+            android:text="Add Plan!"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/removePlanButton"
+            android:layout_width="225dp"
+            android:layout_height="52dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:backgroundTint="#FF4040"
+            android:text="REMOVE PLAN!"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:visibility="gone" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/saveScheduleButton"
+        android:layout_width="221dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="118dp"
+        android:layout_marginEnd="118dp"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="#397AFD"
+        android:text="SAVE SCHEDULE!"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

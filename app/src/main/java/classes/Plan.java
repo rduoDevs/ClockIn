@@ -93,7 +93,7 @@ public class Plan {
     }
 
     public void deserialize(String val) {
-        String[] values = val.split(PLAN_PARAM_FILLER);
+        String[] values = val.split("\\" +PLAN_PARAM_FILLER);
         for (String string : values) {
             if (string.contains("Name:")) {
                 String newString = string.replace("Name:", "");
@@ -103,10 +103,10 @@ public class Plan {
                 this.planType = newString;
             } else if (string.contains("StartTime:")) {
                 String newData = string.replace("StartTime:", "");
-                this.startTime = Integer.parseInt(newData);
+                this.startTime = Double.parseDouble(newData);
             } else if (string.contains("EndTime:")) {
                 String newData = string.replace("EndTime:", "");
-                this.startTime = Integer.parseInt(newData);
+                this.endTime = Double.parseDouble(newData);
             }
         }
     }

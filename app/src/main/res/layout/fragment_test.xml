@@ -21,11 +21,12 @@
             >
 
             <LinearLayout
+                android:id="@+id/ScheduleLayout1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:id="@+id/ScheduleLayout1">
+                tools:visibility="gone">
 
                 <TextView
                     android:id="@+id/ScheduleText1"
@@ -55,11 +56,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ScheduleLayout2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:id="@+id/ScheduleLayout2">
+                tools:visibility="gone">
 
                 <TextView
                     android:id="@+id/ScheduleText2"
@@ -89,11 +91,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ScheduleLayout3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:id="@+id/ScheduleLayout3">
+                tools:visibility="gone">
 
                 <TextView
                     android:id="@+id/ScheduleText3"
@@ -123,11 +126,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ScheduleLayout4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:id="@+id/ScheduleLayout4">
+                tools:visibility="gone">
 
                 <TextView
                     android:id="@+id/ScheduleText4"
@@ -157,11 +161,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ScheduleLayout5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:id="@+id/ScheduleLayout5">
+                tools:visibility="gone">
 
                 <TextView
                     android:id="@+id/ScheduleText5"
@@ -191,11 +196,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ScheduleLayout6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:id="@+id/ScheduleLayout6">
+                tools:visibility="gone">
 
                 <TextView
                     android:id="@+id/ScheduleText6"
@@ -226,11 +232,12 @@
 
 
             <LinearLayout
+                android:id="@+id/ScheduleLayout7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:id="@+id/ScheduleLayout7">
+                tools:visibility="gone">
 
                 <TextView
                     android:id="@+id/ScheduleText7"
@@ -260,11 +267,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ScheduleLayout8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:id="@+id/ScheduleLayout8">
+                tools:visibility="gone">
 
                 <TextView
                     android:id="@+id/ScheduleText8"
@@ -294,11 +302,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ScheduleLayout9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:id="@+id/ScheduleLayout9">
+                tools:visibility="gone">
 
                 <TextView
                     android:id="@+id/ScheduleText9"
@@ -328,11 +337,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ScheduleLayout10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:id="@+id/ScheduleLayout10">
+                tools:visibility="gone">
 
                 <TextView
                     android:id="@+id/ScheduleText10"

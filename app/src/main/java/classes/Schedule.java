@@ -23,7 +23,6 @@ public class Schedule {
     private Context context;
     private Activity viewToUse;
     public ArrayList<Plan> plans = new ArrayList<Plan>();
-    private int date;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private Map<String, ColorStateList> colorMap = getColors();
@@ -33,7 +32,7 @@ public class Schedule {
     public static ArrayList<TextView> textList;
     */
     
-    public static final String SCHEDULE_FILLER = "$#@";
+    public static final String SCHEDULE_FILLER = "'-]!!!";
     public static final String PLAN_FILLER = "!!=_=!!";
 
     private static Map<String, ColorStateList> getColors() {
@@ -61,29 +60,28 @@ public class Schedule {
             deserialize(serialized);
         }
     }*/
-    public static Map<String, Schedule> getSchedules(Context context) {
-        preferences = context.getSharedPreferences("Schedules", Context.MODE_PRIVATE);
-        return preferences.getAll();
+    public static Map<String, String> getSchedules(Context context) {
+        SharedPreferences preference = context.getSharedPreferences("Schedules", Context.MODE_PRIVATE);
+        return (Map<String, String>) preference.getAll();
     }
     // Default, new blank schedule w/no template
     public Schedule(String name, Context context, Activity view) {
         this.name = name;
         this.context = context;
         this.viewToUse = view;
-        this.date = 0;
     }
 
     public void save() {
         preferences = this.context.getSharedPreferences("Schedules", Context.MODE_PRIVATE);
         editor = preferences.edit();
         editor.putString(this.name, serialize());
+        editor.commit();
     }
 
     public String serialize() {
         String serializedString = "";
-        serializedString += ("Name:" + this.name);
-        serializedString += (SCHEDULE_FILLER + "Date:" + this.date + SCHEDULE_FILLER);
-        serializedString += ("Plans:");
+        serializedString = ("Name:" + this.name + SCHEDULE_FILLER);
+        serializedString = serializedString + ("Plans:");
         for (Plan plan: this.plans) {
             serializedString += (PLAN_FILLER + plan.serialize());
         }
@@ -91,24 +89,30 @@ public class Schedule {
     }
 
     public void deserialize(String serializedString) {
-
         String[] product = serializedString.split(SCHEDULE_FILLER);
+        System.out.println(product.length);
+        int index = 0;
         for (String string : product) {
-            /* if (string.contains("Name:")) {
+            index++;
+            System.out.println(string);
+            if (string.contains("Name:") && index == 1) {
                 String newString = string.replace("Name:", "");
                 this.name = newString;
-            } else */
-            if (string.contains("Plans:")) {
+            } else if (string.contains("Plans:")) {
+               // System.out.println("HERE!!");
                 String newString = string.replace("Plans:", "");
                 String[] planStrings = newString.split(PLAN_FILLER);
+                System.out.println(newString);
+                System.out.println(planStrings.length);
+                System.out.println(this.plans.size() + "PLANS");
                 for (String val : planStrings) {
-                    Plan newPlan = new Plan(this);
-                    newPlan.deserialize(val);
-                    this.plans.add(newPlan);
+                    if (val.contains("Name:")) {
+                        System.out.println(val);
+                        Plan newPlan = new Plan(this);
+                        newPlan.deserialize(val);
+                    }
                 }
-            } else if (string.contains("Date:")) {
-                String newData = string.replace("Date:", "");
-                this.date = Integer.parseInt(newData);
+                System.out.println(this.plans.size() + "PLANS");
             }
         }
     }

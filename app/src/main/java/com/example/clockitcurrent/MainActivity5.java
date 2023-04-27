@@ -195,7 +195,7 @@ public class MainActivity5 extends AppCompatActivity {
         layoutList1[9] = (View) fragView.findViewById(R.id.ScheduleLayout10);
 
 
-        Schedule schedule = new Schedule("Test", this, (Activity) this);
+        Schedule schedule = new Schedule("Test", this.getApplicationContext(), (Activity) this);
         planToButton = schedule.updateFragment(buttonList1, textList1, layoutList1);
         Button newPlanButton = this.findViewById(R.id.newPlanButton);
 
@@ -234,8 +234,18 @@ public class MainActivity5 extends AppCompatActivity {
         planNamer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                currentPlan.setName(planNamer.getText().toString());
-                currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
+                if (currentPlan != null) {
+                    currentPlan.setName(v.getText().toString());
+                    currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
+                }
+                return false;
+            }
+        });
+
+        scheduleNamer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                schedule.setName(v.getText().toString());
                 return false;
             }
         });
