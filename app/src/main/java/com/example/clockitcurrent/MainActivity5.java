@@ -1,3 +1,8 @@
+/*
+    MainActivity5 Class
+    Activity that allows for the user to create new schedules
+*/
+
 package com.example.clockitcurrent;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +27,7 @@ import classes.Plan;
 import classes.Schedule;
 
 public class MainActivity5 extends AppCompatActivity {
-
+    // Initialize element variables
     private EditText scheduleNamer;
     private EditText planNamer;
     private Spinner typeScroll;
@@ -34,23 +39,25 @@ public class MainActivity5 extends AppCompatActivity {
     private Spinner endMinuteScroll;
     private Button removePlanButton;
     private Button saveScheduleButton;
+    // Corresponding plans, buttons, and fragment arrays
     private Plan currentPlan;
     private Button[] buttonList1;
     private TextView[] textList1;
     private View[] layoutList1;
     private Map<Button, Plan> planToButton = new HashMap<Button, Plan>();
-
+    // ArrayLists for Spinner Input Values
     private ArrayList<String> planTypeList = new ArrayList<String>();
     private ArrayList<String> minuteList = new ArrayList<String>();
     private ArrayList<String> hourList = new ArrayList<String>();
 
-
+    // Place the input values into the spinners for user to select when needed
     private void setSpinnerSetsToPlan() {
         int hour;
         int minutes;
         int endHour;
         int endMinutes;
         if (currentPlan != null) {
+            // Set up right visibilities and default time inputs
             removePlanButton.setVisibility(View.VISIBLE);
             planNamer.setText((CharSequence) currentPlan.getName());
             hour = (int) currentPlan.getStartTime();
@@ -87,6 +94,7 @@ public class MainActivity5 extends AppCompatActivity {
             endMinuteScroll.setSelection(minuteList.indexOf(endMinString));
             typeScroll.setSelection(planTypeList.indexOf(currentPlan.getType()));
         } else {
+            // Default it still even with no current plan
             removePlanButton.setVisibility(View.GONE);
             startAMScroll.setSelection(0);
             startMinuteScroll.setSelection(0);
@@ -103,7 +111,9 @@ public class MainActivity5 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main5);
+        // Set up the navigation
         Navigator.navigateTo((Button) this.findViewById(R.id.button14), this, MainActivity4.class);
+        // Initialize the variables
         typeScroll = this.findViewById(R.id.planTypeSpinner);
         planNamer = this.findViewById(R.id.planNamer);
         scheduleNamer = this.findViewById(R.id.scheduleNamer);
@@ -118,8 +128,10 @@ public class MainActivity5 extends AppCompatActivity {
         removePlanButton = this.findViewById(R.id.removePlanButton);
         saveScheduleButton = this.findViewById(R.id.saveScheduleButton);
 
-        setSpinnerSetsToPlan();
 
+        // Set up the inputs into the spinner
+        setSpinnerSetsToPlan();
+        
         planTypeList.add("Wellbeing");
         planTypeList.add("School");
         planTypeList.add("Work");
@@ -158,6 +170,7 @@ public class MainActivity5 extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        // Initialize the fragment arrays
         View fragView = this.findViewById(R.id.newScheduleContainer);
         buttonList1 = new Button[10];
         buttonList1[0] = (Button) fragView.findViewById(R.id.ScheduleButton1);
@@ -195,7 +208,7 @@ public class MainActivity5 extends AppCompatActivity {
         layoutList1[8] = (View) fragView.findViewById(R.id.ScheduleLayout9);
         layoutList1[9] = (View) fragView.findViewById(R.id.ScheduleLayout10);
 
-
+        // Set up functionality for remove plan button to delete a selected plan
         Schedule schedule = new Schedule("Test", this.getApplicationContext(), (Activity) this);
         planToButton = schedule.updateFragment(buttonList1, textList1, layoutList1);
         Button newPlanButton = this.findViewById(R.id.newPlanButton);
@@ -213,7 +226,7 @@ public class MainActivity5 extends AppCompatActivity {
             }
         });
 
-
+        // Allow user to save the schedule into app data
         saveScheduleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,6 +234,7 @@ public class MainActivity5 extends AppCompatActivity {
             }
         });
 
+        // Creates a new plan in the schedule for them to edit
         newPlanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,6 +247,7 @@ public class MainActivity5 extends AppCompatActivity {
             }
         });
 
+        // Allows user to rename plan
         planNamer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -244,6 +259,7 @@ public class MainActivity5 extends AppCompatActivity {
             }
         });
 
+        // Allows user to rename schedule
         scheduleNamer.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -251,8 +267,6 @@ public class MainActivity5 extends AppCompatActivity {
                 return false;
             }
         });
-
-
 
         // Sync up the buttons to be editable when clicked
         for (Button currentButton : buttonList1) {
@@ -267,7 +281,7 @@ public class MainActivity5 extends AppCompatActivity {
             });
         }
 
-        // For Type
+        // Input For Type
         typeScroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
             @Override
@@ -283,7 +297,7 @@ public class MainActivity5 extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        // For Times
+        // Input For Times
         startHourScroll.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
             @Override
@@ -420,7 +434,7 @@ public class MainActivity5 extends AppCompatActivity {
 
     }
 
-
+    // Adds data into the spinner
     public void addToSpinner(ArrayList list, Spinner spinner) {
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, list);
         spinner.setAdapter(typeAdapter);

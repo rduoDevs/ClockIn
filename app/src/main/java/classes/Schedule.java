@@ -1,3 +1,9 @@
+/*
+    Schedule Class
+    Custom class that simulates schedules for the app
+    Helps handle with logic implemeneting it onto UIs
+*/
+
 package classes;
 
 import android.app.Activity;
@@ -19,22 +25,19 @@ import java.util.Map;
 import java.util.Set;
 
 public class Schedule {
+
+    // Class Variables
     private String name;
     private Context context;
-    private Activity viewToUse;
     public ArrayList<Plan> plans = new ArrayList<Plan>();
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
-    private Map<String, ColorStateList> colorMap = getColors();
     
-   /* public static ArrayList<Button> buttonList;
-    public static ArrayList<View> layoutList;
-    public static ArrayList<TextView> textList;
-    */
-    
+    // Variables for serialization + deserialization
     public static final String SCHEDULE_FILLER = "'-]!!!";
     public static final String PLAN_FILLER = "!!=_=!!";
 
+    // Grab the values of corresponding plan types + colors
     private static Map<String, ColorStateList> getColors() {
         Map<String, ColorStateList> colorDict = new HashMap<String, ColorStateList>();
         colorDict.put("Wellbeing", ColorStateList.valueOf(Color.parseColor("#FBE242")));
@@ -46,31 +49,20 @@ public class Schedule {
         return colorDict;
     }
 
-    /*// Creating a new schedule based off template.
-    public Schedule(String name, String template, int date, Context context, Activity view) {
-        this.name = name;
-        this.date = date;
-        this.viewToUse = view;
-        this.context = context;
-        preferences = context.getSharedPreferences(template, Context.MODE_PRIVATE);
-        editor = preferences.edit();
-        // Verify it's an actual schedule template + deserialize for use
-        if (preferences.getBoolean("Valid", false)) {
-            String serialized = preferences.getString("Data", "");
-            deserialize(serialized);
-        }
-    }*/
+
+    // Sends out a HashMap of the app data for schedules
     public static Map<String, String> getSchedules(Context context) {
         SharedPreferences preference = context.getSharedPreferences("Schedules", Context.MODE_PRIVATE);
         return (Map<String, String>) preference.getAll();
     }
-    // Default, new blank schedule w/no template
-    public Schedule(String name, Context context, Activity view) {
+
+    // Default, new blank schedule ready for editing
+    public Schedule(String name, Context context) {
         this.name = name;
         this.context = context;
-        this.viewToUse = view;
     }
 
+    // Saves the schedule in app data with serialization
     public void save() {
         preferences = this.context.getSharedPreferences("Schedules", Context.MODE_PRIVATE);
         editor = preferences.edit();
@@ -78,6 +70,8 @@ public class Schedule {
         editor.commit();
     }
 
+    // Transform schedule and its plans into a single, serialized string
+    // This string can be saved as data under SharedPrefs
     public String serialize() {
         String serializedString = "";
         serializedString = ("Name:" + this.name + SCHEDULE_FILLER);
@@ -88,23 +82,21 @@ public class Schedule {
         return serializedString;
     }
 
+    // Deserialize stored schedule data from SharedPref
+    // Converts to actual, usable Schedule + Plan objects
     public void deserialize(String serializedString) {
         String[] product = serializedString.split(SCHEDULE_FILLER);
         System.out.println(product.length);
         int index = 0;
-        for (String string : product) {
+        for (String string : product) { // Separates the string into different parts
             index++;
             System.out.println(string);
             if (string.contains("Name:") && index == 1) {
                 String newString = string.replace("Name:", "");
                 this.name = newString;
             } else if (string.contains("Plans:")) {
-               // System.out.println("HERE!!");
                 String newString = string.replace("Plans:", "");
                 String[] planStrings = newString.split(PLAN_FILLER);
-                System.out.println(newString);
-                System.out.println(planStrings.length);
-                System.out.println(this.plans.size() + "PLANS");
                 for (String val : planStrings) {
                     if (val.contains("Name:")) {
                         System.out.println(val);
@@ -117,30 +109,31 @@ public class Schedule {
         }
     }
 
-    public void addPlan(Plan plan) {
-        this.plans.add(plan);
-    }
+    // Updates the given elements in a FragmentContainer to display schedule
     public Map<Button, Plan> updateFragment(Button[] buttonList, TextView[] textList, View[] layoutList) {
         reorganizePlans();
         Map<Button, Plan> result = new HashMap<Button, Plan>();
+        // Reset the container
         for (View layout : layoutList) {
-            //System.out.println(layout);
            layout.setVisibility(View.GONE);
         }
-
+        // Add the plans + details back in
         for (int i = 0; i < this.plans.size(); i++) {
             Plan plan = this.plans.get(i);
             Button buttonToEdit = (Button) buttonList[i];
             result.put(buttonToEdit, plan);
             TextView textToEdit = (TextView) textList[i];
             buttonToEdit.setText((CharSequence) plan.getName());
-            buttonToEdit.setBackgroundTintList(colorMap.get(plan.getType()));
+            buttonToEdit.setBackgroundTintList(getColors().get(plan.getType()));
             textToEdit.setText(plan.convertToTimestamp());
             layoutList[i].setVisibility(View.VISIBLE);
         }
+        // Return HashMap of corresponding buttons + plans in case activity class needs it
         return result;
     }
 
+    // Reorganizes the plans in chronological order w/selection sort
+    // Called after plan edits or new plan additions
     public void reorganizePlans() {
         double timeToBeat = 24;
         ArrayList<Plan> planArray = new ArrayList<Plan>();
@@ -148,27 +141,28 @@ public class Schedule {
             for (Plan planVal : this.plans) {
                 if (planVal.getStartTime() < timeToBeat) {
                     timeToBeat = planVal.getStartTime();
-
+                    planArray.set(i, planVal);
                 }
             }
         }
+        this.plans = planArray;
     }
 
-    // Returns the earliest time slot available, and the longest duration it can be before the next event
-    private double  starter = 0;
+    // Returns the earliest time slot available
+    // and the longest duration it can be before the next event
     public double[] findEarliestTimeSlot() {
-        if (this.plans.size() == 0) {
+        if (this.plans.size() == 0) { // Return default 12AM to 1AM if no plans yet
             double[] result = {0, 1};
             return result;
-        } else if (this.plans.get(0).getStartTime() > 0) {
+        } else if (this.plans.get(0).getStartTime() > 0) { // Return 12AM to first plan start time if possible
             double[] result = {0, this.plans.get(0).getStartTime()};
             return result;
-        } else {
+        } else { // Return the earliest time and available space if otherwise
             double duration = 0;
             double newTime = 0;
             for (int i = 0; i < this.plans.size() - 1; i++) {
                 if (this.plans.get(i).getEndTime() < this.plans.get(i + 1).getStartTime()) {
-                    double[] result = {this.plans.get(i).getEndTime(), this.plans.get(i).getStartTime() - (this.plans.get(i).getEndTime())};
+                    double[] result = {this.plans.get(i).getEndTime(), this.plans.get(i+1).getStartTime() - (this.plans.get(i).getEndTime())};
                     return result;
                 }
             }
@@ -181,6 +175,8 @@ public class Schedule {
         }
     }
 
+
+    // Setter method for name
     public void setName(String name) {
         this.name = name;
     }

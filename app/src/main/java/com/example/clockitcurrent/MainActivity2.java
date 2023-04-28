@@ -1,3 +1,7 @@
+/*
+    MainActivit2 Class
+    Settings page that stores and updates settings data based on input
+*/
 package com.example.clockitcurrent;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,8 +29,7 @@ public class MainActivity2 extends AppCompatActivity {
     private Button darklyButton;
     private Button livelyButton;
     private Button exitButton;
-    //private Button[] themeButtonList;
-    public SharedPreferences preferences;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,15 +108,7 @@ public class MainActivity2 extends AppCompatActivity {
                 }
         );
 
-        // Apply setting changes when changed (only needed for theme at the moment)
-        preferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if (key == "Theme") {
-                    // TODO: Do animations of color, fonts, and iconography.
-                }
-            }
-        });
+        
 
     }
 }

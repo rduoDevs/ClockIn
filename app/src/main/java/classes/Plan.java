@@ -1,18 +1,12 @@
+/*
+    Plan Class
+    Components of a Schedule, that store information on events, times, event types, and more
+*/
 package classes;
 
 import android.content.res.ColorStateList;
 
 public class Plan {
-    class tags {}
-    // Constants
-    public static final String[] PLAN_TYPES = {
-            "Wellbeing",
-            "Work-Related",
-            "School-Related",
-            "Free-time",
-            "Other"
-    };
-
     // Object Variables
     private String name;
     private String planType;
@@ -20,33 +14,28 @@ public class Plan {
     private double endTime;
     private ColorStateList planColor;
     private Schedule parentSchedule;
+    // Variable for serialization
     public static final String PLAN_PARAM_FILLER = "*_*";
 
+    // Constructor
     public Plan(Schedule sched) {
         double[] prelimTimeInfo = sched.findEarliestTimeSlot();
         name = "Some Event";
         planType = "Other";
         parentSchedule = sched;
         startTime = prelimTimeInfo[0];
-        sched.addPlan(this);
+        sched.plans.add(this);
         endTime = prelimTimeInfo[1];
     }
 
-    // Constructs a generic Downtime plan when needed w/time params
-    public Plan(Schedule sched, double start, double end) {
-        name = "Downtime";
-        planType = "Other";
-        parentSchedule = sched;
-        startTime = start;
-        endTime = startTime += end;
-    }
-
+    // Converts the time data into a timestamp that can be displayed on string
     public String convertToTimestamp() {
         String moniker1;
         String moniker2;
         String result;
         double startTimeToUse = startTime;
         double endTimeToUse = endTime;
+        // Change the values depending on AM/PM to fit timestamp
         if (startTimeToUse >= 13) {
             startTimeToUse -= 12;
             moniker1 = " PM";
@@ -65,6 +54,7 @@ public class Plan {
         if (endTimeToUse < 1) {
             endTimeToUse += 12;
         }
+        // Start compiling the bits together into one timestamp string
         int startInt = (int) startTimeToUse;
         int startMinutes = (int) (((startTimeToUse - startInt) * 60)+.5);
         String sMinutes = startMinutes + "";
@@ -79,11 +69,12 @@ public class Plan {
             eMinutes = "0" + eMinutes;
         }
         String minutes2 = endInt + ":" + eMinutes + moniker2;
-
+        // Return the final string
         result = minutes1 + " to " + minutes2;
         return result;
     }
 
+    // Serializes the plan as a String that can be stored as data
     public String serialize() {
         String newString = ("Name:" + this.name + PLAN_PARAM_FILLER);
         newString += ("PlanType:" + this.planType + PLAN_PARAM_FILLER);
@@ -92,8 +83,9 @@ public class Plan {
         return newString;
     }
 
+    // Deserializes a plan in String format so it can be used
     public void deserialize(String val) {
-        String[] values = val.split("\\" +PLAN_PARAM_FILLER);
+        String[] values = val.split("\\" + PLAN_PARAM_FILLER);
         for (String string : values) {
             if (string.contains("Name:")) {
                 String newString = string.replace("Name:", "");
@@ -111,10 +103,7 @@ public class Plan {
         }
     }
 
-    public String stringifyDate() {
-        // TODO: Finalize how date will be done.
-        return "";
-    }
+
 
     // Setter Methods
     public void setName(String name) {

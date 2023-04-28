@@ -1,3 +1,8 @@
+/*
+    MainActivity4 Class
+    Viewing activity allowing for user to look at all their saved schedules individually
+    Schedules can be prompted with additional, outside info dependent on settings
+*/
 package com.example.clockitcurrent;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,31 +36,33 @@ import classes.Schedule;
 
 public class MainActivity4 extends AppCompatActivity {
 
+    // Variables
     private Spinner spinner;
     private SharedPreferences preferences;
-    private Button[] buttonList1 = new Button[10];
     private Schedule currentSchedule;
+    private Map<String, Schedule> scheduleMap = new HashMap<String, Schedule>();
+    // Fragment element arrays
+    private Button[] buttonList1 = new Button[10];
     private TextView[] textList1 = new TextView[10];
     private View[] layoutList1 = new View[10];
-
-
-    private Map<String, Schedule> scheduleMap = new HashMap<String, Schedule>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
+        // Set-up navigation
         Navigator.navigateTo((Button) this.findViewById(R.id.button4), this, MainActivity3.class);
         Navigator.navigateTo((Button) this.findViewById(R.id.button13), this, MainActivity5.class);
 
+        // Initialize variables
         preferences = this.getApplicationContext().getSharedPreferences("Schedules", Context.MODE_PRIVATE);
         spinner = this.findViewById(R.id.spinner);
-        //formatting.format(newDate).substring(0, 10);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        // Initialize element arrays
         View fragView = this.findViewById(R.id.fragmentContainerView3);
         buttonList1[0] = (Button) fragView.findViewById(R.id.ScheduleButton1);
         buttonList1[1] = (Button) fragView.findViewById(R.id.ScheduleButton2);
@@ -90,11 +97,11 @@ public class MainActivity4 extends AppCompatActivity {
         layoutList1[8] = (View) fragView.findViewById(R.id.ScheduleLayout9);
         layoutList1[9] = (View) fragView.findViewById(R.id.ScheduleLayout10);
 
+        // Place the schedules into spinner for user to select
         Map<String, String> scheduleMap = (Map<String, String>) preferences.getAll();
         ArrayList<String> list = new ArrayList<String>(scheduleMap.keySet());
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, list);
         spinner.setAdapter(typeAdapter);
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -105,6 +112,7 @@ public class MainActivity4 extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+        // Set-up the click listeners for buttons in fragment container
         for (int i = 0; i < buttonList1.length; i++) {
             Button buttonUsing = buttonList1[i];
             buttonUsing.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +134,7 @@ public class MainActivity4 extends AppCompatActivity {
 
 
         }
-
+        // Set-up exit button for the info prompt
         FragmentContainerView view = this.findViewById(R.id.infoView2);
         Button leaveFragButton = view.findViewById(R.id.LeaveFragmentButton);
         leaveFragButton.setOnClickListener(new View.OnClickListener() {
@@ -147,6 +155,7 @@ public class MainActivity4 extends AppCompatActivity {
 
     }
 
+    // Animation for info prompt
     public void moveFrag() {
         FragmentContainerView view = this.findViewById(R.id.infoView2);
         Animation move = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.tween);
@@ -162,6 +171,7 @@ public class MainActivity4 extends AppCompatActivity {
 
     }
 
+    // Set-up the info prompt on demand
     public void promptInfo(Plan plan) {
         SharedPreferences settings = this.getApplicationContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
         boolean valid = settings.getBoolean("ShowOutsideInfo", false);
@@ -177,6 +187,7 @@ public class MainActivity4 extends AppCompatActivity {
             CharSequence newInfoText = "Find Info on: '" + plan.getName() + "' in general";
             CharSequence newVidText = "Find Videos on: '" + plan.getName() + "'";
 
+            // Update element properties
             title.setText(plan.getName());
             timeRange.setText(plan.convertToTimestamp());
             planText.setText(newPlanText);
@@ -185,66 +196,50 @@ public class MainActivity4 extends AppCompatActivity {
 
             view.setVisibility(View.VISIBLE);
             moveFrag();
+
+            // Allow to direct user to links 
             infoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                        try {
-
-                            String query = plan.getName();
-                            if (plan.getType() != "Special!" && plan.getType() != "Other") {
-                                query = query + " and " + plan.getType();
-                            }
-                            Uri link = Uri.parse("https://google.com/search?q=" + query);
-                            Intent infoIntent = new Intent(Intent.ACTION_VIEW, link);
-                            infoIntent.putExtra(SearchManager.QUERY, query);
-                            startActivity(infoIntent);
-                        } catch (ActivityNotFoundException data) {
-                            data.printStackTrace();
-                        }
-                    }
-
+                goToLink(plan, "https://google.com/search?q=");
             });
             vidButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                        try {
-
-                            String query = plan.getName();
-                            if (plan.getType() != "Special!" && plan.getType() != "Other") {
-                                query = query + " and " + plan.getType();
-                            }
-                            Uri link = Uri.parse("https://youtube.com/search?q=" + query);
-                            Intent infoIntent = new Intent(Intent.ACTION_VIEW, link);
-                            infoIntent.putExtra(SearchManager.QUERY, query);
-                            startActivity(infoIntent);
-                        } catch (ActivityNotFoundException data) {
-                            data.printStackTrace();
-                        }
-                    }
-
+                    goToLink(plan, "https://youtube.com/search?q=");
             });
 
 
         }
     }
 
+    // Send them to link with intent
+    private void goToLink(Plan plan, Uri url) {
+        try {
 
+                            String query = plan.getName();
+                            if (plan.getType() != "Special!" && plan.getType() != "Other") {
+                                query = query + " and " + plan.getType();
+                            }
+                            Uri link = Uri.parse(url+ query);
+                            Intent infoIntent = new Intent(Intent.ACTION_VIEW, link);
+                            infoIntent.putExtra(SearchManager.QUERY, query);
+                            startActivity(infoIntent);
+                        } catch (ActivityNotFoundException data) {
+                            data.printStackTrace();
+                        }
+    }
+
+    // Displays the needed schedule on demand
     public void updateScreen(String data, String serializedData) {
         if (serializedData != "N/A") {
             Schedule schedule;
-
-
-
             if (!scheduleMap.containsKey(data)) {
                 schedule = new Schedule(data, this.getApplicationContext(), this);
                 schedule.deserialize(serializedData);
                 scheduleMap.put(data, schedule);
             } else {
                 schedule = scheduleMap.get(data);
-            }
-            System.out.println(layoutList1[0] + "");
             currentSchedule = schedule;
             schedule.updateFragment(buttonList1, textList1, layoutList1);
         }
