@@ -146,8 +146,8 @@ public class Schedule {
         ArrayList<Plan> planArray = new ArrayList<Plan>();
         for (int i = 0; i < planArray.size(); i++) {
             for (Plan planVal : this.plans) {
-                if (planVal.startTime < timeToBeat) {
-                    timeToBeat = planVal.startTime;
+                if (planVal.getStartTime() < timeToBeat) {
+                    timeToBeat = planVal.getStartTime();
 
                 }
             }
@@ -160,28 +160,25 @@ public class Schedule {
         if (this.plans.size() == 0) {
             double[] result = {0, 1};
             return result;
-        } else if (this.plans[0].getStartTime > 0) {
-            double[] result = {0, this.plans.get(i).getStartTime()};
+        } else if (this.plans.get(0).getStartTime() > 0) {
+            double[] result = {0, this.plans.get(0).getStartTime()};
             return result;
         } else {
             double duration = 0;
             double newTime = 0;
             for (int i = 0; i < this.plans.size() - 1; i++) {
                 if (this.plans.get(i).getEndTime() < this.plans.get(i + 1).getStartTime()) {
-                    double[] result = {this.plans.get(i).getEndTime(), this.plans.get(i).getStartTime() - (this.plans.get(i).getEndTime()};
+                    double[] result = {this.plans.get(i).getEndTime(), this.plans.get(i).getStartTime() - (this.plans.get(i).getEndTime())};
                     return result;
                 }
             }
-            double duration = 1.0;
+            duration = 1.0;
             if (24 - this.plans.get(this.plans.size() - 1).getEndTime() < 1) {
                 duration = 24 - this.plans.get(this.plans.size() - 1).getEndTime();
             }
-            return {this.plans.get(this.plans.size() - 1).getEndTime(), duration};
+            double[] result = {this.plans.get(this.plans.size() - 1).getEndTime(), duration};
+            return result;
         }
-        starter ++;
-        ender ++;
-        double[] result = {starter, ender};
-        return result;
     }
 
     public void setName(String name) {

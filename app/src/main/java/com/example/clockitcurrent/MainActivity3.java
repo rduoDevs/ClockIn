@@ -2,18 +2,30 @@ package com.example.clockitcurrent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,8 +33,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import classes.Navigator;
@@ -49,7 +64,13 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private SharedPreferences fullPreferences;
+    private Boolean[] notifsSet = {false, false, false};
     private AlarmManager alarmManager;
+    private Map<String, Integer> typeToIcon = new HashMap<String, Integer>();
+    private Map<Button, Plan> buttonToPlan = new HashMap<Button, Plan>();
+    private Schedule currentSchedule;
+    private boolean fragInUse = false;
+    public NotificationChannel channel;
     
 
 
@@ -69,31 +90,64 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
         preferences = this.getApplicationContext().getSharedPreferences("ScheduleDates", Context.MODE_PRIVATE);
         fullPreferences = this.getApplicationContext().getSharedPreferences("Schedules", Context.MODE_PRIVATE);
 
+        typeToIcon.put("School", R.drawable.school);
+        typeToIcon.put("Work", R.drawable.work);
+        typeToIcon.put("Wellbeing", R.drawable.wellbeing);
+        typeToIcon.put("Other", R.drawable.empty);
+        typeToIcon.put("Special!", R.drawable.star);
+
         long millis = System.currentTimeMillis();
         today = formatting.format(new Date(millis));
         int dayMillis = 86400000;
         yesterday = formatting.format(new Date(millis - dayMillis));
         tomorrow = formatting.format(new Date(millis + dayMillis));
 
-        Map<String, String> scheduleMap = (Map<String, String>) fullPreferences.getAll();
-        ArrayList<String> list = new ArrayList<String>(scheduleMap.keySet());
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, list);
-        schedSpinner.setAdapter(typeAdapter);
-
     }
 
-    @Override
-    protected void onResume() {
+    /*@Override
+    /*protected void onResume() {
         super.onResume();
         fullPreferences = this.getApplicationContext().getSharedPreferences("Schedules", Context.MODE_PRIVATE);
         Map<String, String> scheduleMap = (Map<String, String>) fullPreferences.getAll();
         ArrayList<String> list = new ArrayList<String>(scheduleMap.keySet());
         ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, list);
         schedSpinner.setAdapter(typeAdapter);
+    }*/
+
+    public void setNotification(Plan plan, int index) {
+        Calendar calendar = Calendar.getInstance();
+        double diff = plan.getStartTime() - ((int) plan.getStartTime());
+        int minutes = (int) ((diff * 60) + 0.5);
+        int currentDay = Calendar.DAY_OF_MONTH;
+        if (index == 0) {
+            currentDay--;
+        } else if (index == 2) {
+            currentDay++;
+        }
+        calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+        calendar.set(Calendar.HOUR_OF_DAY, (int) (plan.getStartTime())); // set the hour to 8PM
+        calendar.set(Calendar.MINUTE, minutes); // set the minute to 0
+        calendar.set(Calendar.SECOND, 0); // set the second to 0
+        calendar.set(Calendar.MILLISECOND, 0); // set the millisecond to 0
+
+        if (calendar.getTimeInMillis() > System.currentTimeMillis()) {
+            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            String[] encouragements = {"Keep up the good work!", "Your next activity on the schedule's starting now!", "One more plan to do!"};
+            Intent alarmIntent = new Intent(getApplicationContext(), Navigator.class);
+            alarmIntent.putExtra("Title", plan.getName());
+            alarmIntent.putExtra("Content", encouragements[(int) (Math.random() * 3)]);
+            alarmIntent.putExtra("Icon", typeToIcon.get(plan.getType()));
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
+
+            System.out.println(calendar.getTimeInMillis());
+            System.out.println(System.currentTimeMillis());
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
     }
     @Override
     protected void onStart() {
         super.onStart();
+        System.out.println("YOOOOOO");
         fragView = this.findViewById(R.id.fragmentContainerView);
         buttonList1 = new Button[10];
         buttonList1[0] = (Button) fragView.findViewById(R.id.ScheduleButton1);
@@ -139,30 +193,132 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
         todayButton.setOnClickListener(this);
         yesterdayButton.setOnClickListener(this);
         tomorrowButton.setOnClickListener(this);
+        onClick(todayButton);
 
-        schedSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        for (int i = 0; i < buttonList1.length; i++) {
+            Button buttonUsing = buttonList1[i];
+            buttonUsing.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (currentSchedule != null) {
+                        int index = -1;
+                        for (int i = 0; i < buttonList1.length; i++) {
+                            if ((Button) v == buttonList1[i]) {
+                                index = i;
+                                break;
+                            }
+                        }
+                        Plan planUsing = currentSchedule.plans.get(index);
+                        promptInfo(planUsing);
+                    }
+                }
+            });
+
+
+        }
+
+        FragmentContainerView view = this.findViewById(R.id.infoView);
+        Button leaveFragButton = view.findViewById(R.id.LeaveFragmentButton);
+        leaveFragButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String val = "";
+            public void onClick(View v) {
+                Animation move = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.test);
+                view.startAnimation(move);
+                view.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.setVisibility(View.GONE);
+                        view.clearAnimation();
+                    }
+                }, 500);
 
-                if (currentlySelectedButton == todayButton)
-                    val = today.toString().substring(0, 10);
-                else if (currentlySelectedButton == yesterdayButton)
-                    val = yesterday.toString().substring(0, 10);
-                else
-                    val = tomorrow.toString().substring(0, 10);
-                editor = preferences.edit();
-                editor.putString(val, fullPreferences.getString((String) parent.getItemAtPosition(position), null));
-                editor.commit();
-                System.out.println(preferences.getString(val, "N/A"));
-                System.out.println(val);
-                onClick(currentlySelectedButton);
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+    }
+
+    public void moveFrag() {
+        FragmentContainerView view = this.findViewById(R.id.infoView);
+        Animation move = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.tween);
+        view.setVisibility(View.VISIBLE);
+        view.startAnimation(move);
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                view.clearAnimation();
+            }
+        }, 500);
+
+
+    }
+
+    public void promptInfo(Plan plan) {
+        SharedPreferences settings = this.getApplicationContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        boolean valid = settings.getBoolean("ShowOutsideInfo", false);
+        if (valid) {
+            fragInUse = true;
+            FragmentContainerView view = this.findViewById(R.id.infoView);
+            Button infoButton = view.findViewById(R.id.InfoButton);
+            Button vidButton = view.findViewById(R.id.VideoButton);
+            TextView title = view.findViewById(R.id.SelectedNameText);
+            TextView timeRange = view.findViewById(R.id.SelectedTimeRange);
+            TextView planText = view.findViewById(R.id.SelectedTypeText);
+
+            CharSequence newPlanText = "(" + plan.getType() + ")";
+            CharSequence newInfoText = "Find Info on: '" + plan.getName() + "' in general";
+            CharSequence newVidText = "Find Videos on: '" + plan.getName() + "'";
+
+            title.setText(plan.getName());
+            timeRange.setText(plan.convertToTimestamp());
+            planText.setText(newPlanText);
+            infoButton.setText(newInfoText);
+            vidButton.setText(newVidText);
+
+            view.setVisibility(View.VISIBLE);
+            moveFrag();
+            infoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (fragInUse) {
+                        try {
+
+                            String query = plan.getName();
+                            if (plan.getType() != "Special!" && plan.getType() != "Other") {
+                                query = query + " and " + plan.getType();
+                            }
+                            Uri link = Uri.parse("https://google.com/search?q=" + query);
+                            Intent infoIntent = new Intent(Intent.ACTION_VIEW, link);
+                            infoIntent.putExtra(SearchManager.QUERY, query);
+                            startActivity(infoIntent);
+                        } catch (ActivityNotFoundException data) {
+                            data.printStackTrace();
+                        }
+                    }
+                }
+            });
+            vidButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (fragInUse) {
+                        try {
+
+                            String query = plan.getName();
+                            if (plan.getType() != "Special!" && plan.getType() != "Other") {
+                                query = query + " and " + plan.getType();
+                            }
+                            Uri link = Uri.parse("https://youtube.com/search?q=" + query);
+                            Intent infoIntent = new Intent(Intent.ACTION_VIEW, link);
+                            infoIntent.putExtra(SearchManager.QUERY, query);
+                            startActivity(infoIntent);
+                        } catch (ActivityNotFoundException data) {
+                            data.printStackTrace();
+                        }
+                    }
+                }
+            });
+
+
+        }
     }
 
     @Override
@@ -193,14 +349,51 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
         if (serializedSched.equals("N/A")) {
             fragView.setVisibility(View.GONE);
             noSchedLayout.setVisibility(View.VISIBLE);
+            if (schedSpinner.getSelectedItem() == null) {
+                Map<String, String> scheduleMap = (Map<String, String>) fullPreferences.getAll();
+                ArrayList<String> list = new ArrayList<String>(scheduleMap.keySet());
+                ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, list);
+                schedSpinner.setAdapter(typeAdapter);
 
+
+                schedSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String val = "";
+
+                        if (currentlySelectedButton == todayButton)
+                            val = today.toString().substring(0, 10);
+                        else if (currentlySelectedButton == yesterdayButton)
+                            val = yesterday.toString().substring(0, 10);
+                        else
+                            val = tomorrow.toString().substring(0, 10);
+                        editor = preferences.edit();
+                        editor.putString(val, fullPreferences.getString((String) parent.getItemAtPosition(position), null));
+                        editor.commit();
+                        System.out.println(preferences.getString(val, "N/A"));
+                        System.out.println(val);
+                        onClick(currentlySelectedButton);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {}
+                });
+            }
         } else {
             noSchedLayout.setVisibility(View.GONE);
             fragView.setVisibility(View.VISIBLE);
 
             Schedule deserialized = new Schedule("New", this.getApplicationContext(),this);
+            currentSchedule = deserialized;
             deserialized.deserialize(serializedSched);
             deserialized.updateFragment(buttonList1, textList1, layoutList1);
+
+            if (notifsSet[index] != true && index > 0) {
+                notifsSet[index] = true;
+                for (Plan plan : deserialized.plans) {
+                    setNotification(plan, index);
+                }
+            }
         }
     }
 }

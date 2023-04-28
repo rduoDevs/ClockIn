@@ -38,9 +38,11 @@
 
         <Spinner
             android:id="@+id/spinner"
-            android:layout_width="match_parent"
+            android:layout_width="330dp"
             android:layout_height="72dp"
-            android:gravity="center" />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/textView12"
@@ -88,4 +90,15 @@
             android:textStyle="bold" />
 
     </LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/infoView2"
+        android:name="com.example.clockitcurrent.InformationFragment"
+        android:layout_width="match_parent"
+        android:layout_height="319dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout="@layout/fragment_information" />
 </androidx.constraintlayout.widget.ConstraintLayout>

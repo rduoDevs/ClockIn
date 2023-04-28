@@ -118,6 +118,7 @@ public class MainActivity5 extends AppCompatActivity {
         removePlanButton = this.findViewById(R.id.removePlanButton);
         saveScheduleButton = this.findViewById(R.id.saveScheduleButton);
 
+        setSpinnerSetsToPlan();
 
         planTypeList.add("Wellbeing");
         planTypeList.add("School");
@@ -207,6 +208,7 @@ public class MainActivity5 extends AppCompatActivity {
                     schedule.plans.remove(index);
                     currentPlan = null;
                     setSpinnerSetsToPlan();
+                    schedule.updateFragment(buttonList1, textList1, layoutList1);
                 }
             }
         });

@@ -83,7 +83,7 @@
             android:id="@+id/textView9"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="APP THEME:"
+            android:text="PLAN COLOR THEMES:"
             android:textAlignment="center"
             android:textColor="#151515"
             android:textSize="30sp"
@@ -131,6 +131,36 @@
             android:text="Lively"
             android:textSize="24sp" />
 
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#FF3333"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Lively"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#C1C1C1"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Lively"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/button7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:backgroundTint="#C1C1C1"
+            android:fontFamily="sans-serif-smallcaps"
+            android:text="Lively"
+            android:textSize="24sp" />
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
@@ -154,4 +184,5 @@
             android:textStyle="bold" />
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
