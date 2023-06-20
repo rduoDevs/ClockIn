@@ -209,7 +209,7 @@ public class MainActivity5 extends AppCompatActivity {
         layoutList1[9] = (View) fragView.findViewById(R.id.ScheduleLayout10);
 
         // Set up functionality for remove plan button to delete a selected plan
-        Schedule schedule = new Schedule("Test", this.getApplicationContext(), (Activity) this);
+        Schedule schedule = new Schedule("Test", this.getApplicationContext());
         planToButton = schedule.updateFragment(buttonList1, textList1, layoutList1);
         Button newPlanButton = this.findViewById(R.id.newPlanButton);
 
@@ -241,8 +241,8 @@ public class MainActivity5 extends AppCompatActivity {
                 if (schedule.plans.size() < 10) {
                     Plan plan = new Plan(schedule);
                     currentPlan = plan;
-                    setSpinnerSetsToPlan();
                     planToButton = schedule.updateFragment(buttonList1, textList1, layoutList1);
+                    setSpinnerSetsToPlan();
                 }
             }
         });
@@ -253,7 +253,7 @@ public class MainActivity5 extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (currentPlan != null) {
                     currentPlan.setName(v.getText().toString());
-                    currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
+                    planToButton = currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
                 }
                 return false;
             }
@@ -289,7 +289,7 @@ public class MainActivity5 extends AppCompatActivity {
                 if (currentPlan != null) {
                     String data = (String) parent.getItemAtPosition(position);
                     currentPlan.setType(data);
-                    currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
+                    planToButton = currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
                 }
             }
 
@@ -311,7 +311,7 @@ public class MainActivity5 extends AppCompatActivity {
                         data += 12;
                     }
                     currentPlan.setStartTime(data + ((double) (Integer.parseInt((String) startMinuteScroll.getSelectedItem())) /60));
-                    currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
+                    planToButton = currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
                 }
             }
 
@@ -332,7 +332,7 @@ public class MainActivity5 extends AppCompatActivity {
                         data += 12;
                     }
                     currentPlan.setStartTime(data + ((double) (Integer.parseInt((String) startMinuteScroll.getSelectedItem())) /60));
-                    currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
+                    planToButton = currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
                 }
             }
 
@@ -352,10 +352,8 @@ public class MainActivity5 extends AppCompatActivity {
                     if (startAMScroll.getSelectedItem() == "PM") {
                         data += 12;
                     }
-                    System.out.println(startMinuteScroll.getSelectedItem());
-                    System.out.println(((double) (Integer.parseInt((String) startMinuteScroll.getSelectedItem())) / 60));
                     currentPlan.setStartTime(data + ((double) (Integer.parseInt((String) startMinuteScroll.getSelectedItem())) /60));
-                    currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
+                    planToButton = currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
                 }
             }
 
@@ -380,7 +378,7 @@ public class MainActivity5 extends AppCompatActivity {
                         data += 12;
                     }
                     currentPlan.setEndTime(data + ((double) (Integer.parseInt((String) endMinuteScroll.getSelectedItem())) /60));
-                    currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
+                    planToButton = currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
                 }
             }
 
@@ -401,7 +399,7 @@ public class MainActivity5 extends AppCompatActivity {
                         data += 12;
                     }
                     currentPlan.setEndTime(data + ((double) (Integer.parseInt((String) endMinuteScroll.getSelectedItem())) /60));
-                    currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
+                    planToButton = currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
                 }
             }
 
@@ -424,7 +422,7 @@ public class MainActivity5 extends AppCompatActivity {
                     System.out.println(endMinuteScroll.getSelectedItem());
                     System.out.println(((double) (Integer.parseInt((String) endMinuteScroll.getSelectedItem())) / 60));
                     currentPlan.setEndTime(data + ((double) (Integer.parseInt((String) endMinuteScroll.getSelectedItem())) /60));
-                    currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
+                    planToButton = currentPlan.getSchedule().updateFragment(buttonList1, textList1, layoutList1);
                 }
             }
 

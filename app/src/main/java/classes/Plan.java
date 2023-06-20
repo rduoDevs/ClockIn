@@ -25,7 +25,7 @@ public class Plan {
         parentSchedule = sched;
         startTime = prelimTimeInfo[0];
         sched.plans.add(this);
-        endTime = prelimTimeInfo[1];
+        endTime = startTime + prelimTimeInfo[1];
     }
 
     // Converts the time data into a timestamp that can be displayed on string
@@ -36,14 +36,18 @@ public class Plan {
         double startTimeToUse = startTime;
         double endTimeToUse = endTime;
         // Change the values depending on AM/PM to fit timestamp
-        if (startTimeToUse >= 13) {
-            startTimeToUse -= 12;
+        if (startTimeToUse >= 12) {
+            if (startTimeToUse >= 13) {
+                startTimeToUse -= 12;
+            }
             moniker1 = " PM";
         } else {
             moniker1 = " AM";
         }
-        if (endTimeToUse >= 13) {
-            endTimeToUse -= 12;
+        if (endTimeToUse >= 12) {
+            if (endTimeToUse >= 13) {
+                endTimeToUse -= 12;
+            }
             moniker2 = " PM";
         } else {
             moniker2 = " AM";

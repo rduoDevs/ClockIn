@@ -13,7 +13,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -26,7 +25,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -105,12 +103,22 @@ public class MainActivity4 extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                updateScreen((String) parent.getItemAtPosition(position), preferences.getString((String) spinner.getItemAtPosition(position), "N/A"));
+                updateScreen(parent.getItemAtPosition(position).toString(), preferences.getString(parent.getItemAtPosition(position).toString(), "N/A"));
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
+        if (scheduleMap.size() > 0) {
+            spinner.setSelection(0);
+            this.findViewById(R.id.NoScheduleText).setVisibility(View.GONE);
+            fragView.setVisibility(View.VISIBLE);
+            updateScreen((String) spinner.getSelectedItem(), preferences.getString((String) spinner.getSelectedItem(), "N/A"));
+        } else {
+            fragView.setVisibility(View.GONE);
+            this.findViewById(R.id.NoScheduleText).setVisibility(View.VISIBLE);
+        }
 
         // Set-up the click listeners for buttons in fragment container
         for (int i = 0; i < buttonList1.length; i++) {
@@ -201,12 +209,14 @@ public class MainActivity4 extends AppCompatActivity {
             infoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                goToLink(plan, "https://google.com/search?q=");
+                    goToLink(plan, "https://google.com/search?q=");
+                }
             });
             vidButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     goToLink(plan, "https://youtube.com/search?q=");
+                }
             });
 
 
@@ -214,20 +224,19 @@ public class MainActivity4 extends AppCompatActivity {
     }
 
     // Send them to link with intent
-    private void goToLink(Plan plan, Uri url) {
+    private void goToLink(Plan plan, String url) {
         try {
-
-                            String query = plan.getName();
-                            if (plan.getType() != "Special!" && plan.getType() != "Other") {
-                                query = query + " and " + plan.getType();
-                            }
-                            Uri link = Uri.parse(url+ query);
-                            Intent infoIntent = new Intent(Intent.ACTION_VIEW, link);
-                            infoIntent.putExtra(SearchManager.QUERY, query);
-                            startActivity(infoIntent);
-                        } catch (ActivityNotFoundException data) {
-                            data.printStackTrace();
-                        }
+            String query = plan.getName();
+            if (plan.getType() != "Special!" && plan.getType() != "Other") {
+                query = query + " and " + plan.getType();
+            }
+            Uri link = Uri.parse(url + query);
+            Intent infoIntent = new Intent(Intent.ACTION_VIEW, link);
+            infoIntent.putExtra(SearchManager.QUERY, query);
+            startActivity(infoIntent);
+        } catch (ActivityNotFoundException data) {
+            data.printStackTrace();
+        }
     }
 
     // Displays the needed schedule on demand
@@ -235,13 +244,15 @@ public class MainActivity4 extends AppCompatActivity {
         if (serializedData != "N/A") {
             Schedule schedule;
             if (!scheduleMap.containsKey(data)) {
-                schedule = new Schedule(data, this.getApplicationContext(), this);
+                schedule = new Schedule(data, this.getApplicationContext());
                 schedule.deserialize(serializedData);
                 scheduleMap.put(data, schedule);
+                schedule.updateFragment(buttonList1, textList1, layoutList1);
             } else {
                 schedule = scheduleMap.get(data);
-            currentSchedule = schedule;
-            schedule.updateFragment(buttonList1, textList1, layoutList1);
+                currentSchedule = schedule;
+                schedule.updateFragment(buttonList1, textList1, layoutList1);
+            }
         }
     }
 }

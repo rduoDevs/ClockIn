@@ -6,8 +6,6 @@
 
 package classes;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -16,13 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.clockitcurrent.R;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class Schedule {
 
@@ -31,6 +26,7 @@ public class Schedule {
     private Context context;
     public ArrayList<Plan> plans = new ArrayList<Plan>();
     private SharedPreferences preferences;
+    private SharedPreferences colorPrefs;
     private SharedPreferences.Editor editor;
     
     // Variables for serialization + deserialization
@@ -38,14 +34,14 @@ public class Schedule {
     public static final String PLAN_FILLER = "!!=_=!!";
 
     // Grab the values of corresponding plan types + colors
-    private static Map<String, ColorStateList> getColors() {
+    private static Map<String, ColorStateList> getColors(SharedPreferences pref) {
         Map<String, ColorStateList> colorDict = new HashMap<String, ColorStateList>();
-        colorDict.put("Wellbeing", ColorStateList.valueOf(Color.parseColor("#FBE242")));
-        colorDict.put("School", ColorStateList.valueOf(Color.parseColor("#25AF4C")));
-        colorDict.put("Work", ColorStateList.valueOf(Color.parseColor("#2A55AA")));
-        colorDict.put("Downtime", ColorStateList.valueOf(Color.parseColor("#232323")));
-        colorDict.put("Special!", ColorStateList.valueOf(Color.parseColor("#FF4C4C")));
-        colorDict.put("Other", ColorStateList.valueOf(Color.parseColor("#919191")));
+        colorDict.put("Wellbeing", ColorStateList.valueOf(Color.parseColor(pref.getString("PlanTypeColor:Wellbeing", "#5BE17D"))));
+        colorDict.put("School", ColorStateList.valueOf(Color.parseColor(pref.getString("PlanTypeColor:School", "#FF2727"))));
+        colorDict.put("Work", ColorStateList.valueOf(Color.parseColor(pref.getString("PlanTypeColor:Work", "#47AFFF"))));
+        colorDict.put("Downtime", ColorStateList.valueOf(Color.parseColor(pref.getString("PlanTypeColor:Downtime", "#000000"))));
+        colorDict.put("Special!", ColorStateList.valueOf(Color.parseColor(pref.getString("PlanTypeColor:Special!", "#FF7E1A"))));
+        colorDict.put("Other", ColorStateList.valueOf(Color.parseColor(pref.getString("PlanTypeColor:Other", "#737373"))));
         return colorDict;
     }
 
@@ -60,6 +56,7 @@ public class Schedule {
     public Schedule(String name, Context context) {
         this.name = name;
         this.context = context;
+        this.colorPrefs = context.getSharedPreferences("Settings", Context.MODE_PRIVATE);
     }
 
     // Saves the schedule in app data with serialization
@@ -124,7 +121,7 @@ public class Schedule {
             result.put(buttonToEdit, plan);
             TextView textToEdit = (TextView) textList[i];
             buttonToEdit.setText((CharSequence) plan.getName());
-            buttonToEdit.setBackgroundTintList(getColors().get(plan.getType()));
+            buttonToEdit.setBackgroundTintList(getColors(colorPrefs).get(plan.getType()));
             textToEdit.setText(plan.convertToTimestamp());
             layoutList[i].setVisibility(View.VISIBLE);
         }
@@ -136,14 +133,19 @@ public class Schedule {
     // Called after plan edits or new plan additions
     public void reorganizePlans() {
         double timeToBeat = 24;
+        Plan planToBeat = null;
         ArrayList<Plan> planArray = new ArrayList<Plan>();
-        for (int i = 0; i < planArray.size(); i++) {
+        int length = this.plans.size();
+        for (int i = 0; i < length; i++) {
+            timeToBeat = 24;
             for (Plan planVal : this.plans) {
                 if (planVal.getStartTime() < timeToBeat) {
                     timeToBeat = planVal.getStartTime();
-                    planArray.set(i, planVal);
+                    planToBeat = planVal;
                 }
             }
+            planArray.add(planToBeat);
+            this.plans.remove(this.plans.indexOf(planArray.get(i)));
         }
         this.plans = planArray;
     }

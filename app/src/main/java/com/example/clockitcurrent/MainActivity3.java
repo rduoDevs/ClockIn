@@ -7,14 +7,9 @@
 package com.example.clockitcurrent;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
-import androidx.fragment.app.FragmentManager;
-
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
@@ -26,20 +21,14 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -83,7 +72,108 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
     private Schedule currentSchedule;
     private boolean fragInUse = false;
     public NotificationChannel channel;
-    
+
+
+
+    // Send them to link with intent
+    private void goToLink(Plan plan, String url) {
+        try {
+            String query = plan.getName();
+            if (plan.getType() != "Special!" && plan.getType() != "Other") {
+                query = query + " and " + plan.getType();
+            }
+            Uri link = Uri.parse(url+ query);
+            Intent infoIntent = new Intent(Intent.ACTION_VIEW, link);
+            infoIntent.putExtra(SearchManager.QUERY, query);
+            startActivity(infoIntent);
+        } catch (ActivityNotFoundException data) {
+            data.printStackTrace();
+        }
+    }
+    public void setNotification(Plan plan, int index) {
+        // Set up the time for notification
+        Calendar calendar = Calendar.getInstance();
+        double diff = plan.getStartTime() - ((int) plan.getStartTime());
+        int minutes = (int) ((diff * 60) + 0.5);
+        int currentDay = Calendar.DAY_OF_MONTH;
+        if (index == 0) {
+            currentDay--;
+        } else if (index == 2) {
+            currentDay++;
+        }
+        calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+        calendar.set(Calendar.HOUR_OF_DAY, (int) (plan.getStartTime()));
+        calendar.set(Calendar.MINUTE, minutes);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        // Only deploy notification if it's in future, not past
+        if (calendar.getTimeInMillis() > System.currentTimeMillis()) {
+            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            String[] encouragements = {"Keep up the good work!", "Your next activity on the schedule's starting now!", "One more plan to do!"};
+            Intent alarmIntent = new Intent(getApplicationContext(), Navigator.class);
+            alarmIntent.putExtra("Title", plan.getName());
+            alarmIntent.putExtra("Content", encouragements[(int) (Math.random() * 3)]);
+            alarmIntent.putExtra("Icon", typeToIcon.get(plan.getType()));
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
+    }
+
+    // Animation to move the fragment within view
+    private void moveFrag() {
+        FragmentContainerView view = this.findViewById(R.id.infoView);
+        Animation move = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.tween);
+        view.setVisibility(View.VISIBLE);
+        view.startAnimation(move);
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                view.clearAnimation();
+            }
+        }, 500);
+    }
+
+    public void promptInfo(Plan plan) {
+        SharedPreferences settings = this.getApplicationContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
+        boolean valid = settings.getBoolean("ShowOutsideInfo", false);
+        if (valid) {
+            // Define elements
+            FragmentContainerView view = this.findViewById(R.id.infoView);
+            Button infoButton = view.findViewById(R.id.InfoButton);
+            Button vidButton = view.findViewById(R.id.VideoButton);
+            TextView title = view.findViewById(R.id.SelectedNameText);
+            TextView timeRange = view.findViewById(R.id.SelectedTimeRange);
+            TextView planText = view.findViewById(R.id.SelectedTypeText);
+
+            // Change properties of elements to reflect current plan being viewed
+            CharSequence newPlanText = "(" + plan.getType() + ")";
+            CharSequence newInfoText = "Find Info on: '" + plan.getName() + "' in general";
+            CharSequence newVidText = "Find Videos on: '" + plan.getName() + "'";
+
+            title.setText(plan.getName());
+            timeRange.setText(plan.convertToTimestamp());
+            planText.setText(newPlanText);
+            infoButton.setText(newInfoText);
+            vidButton.setText(newVidText);
+
+            view.setVisibility(View.VISIBLE);
+            moveFrag();
+            // Send user to specific Google query when prompted
+            infoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToLink(plan, "https://google.com/search?q=");
+                }
+            });
+            vidButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToLink(plan, "https://youtube.com/search?q=");
+                }
+            });
+        }
+    }
 
 
     @Override
@@ -108,6 +198,7 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
         typeToIcon.put("Wellbeing", R.drawable.wellbeing);
         typeToIcon.put("Other", R.drawable.empty);
         typeToIcon.put("Special!", R.drawable.star);
+        typeToIcon.put("Downtime", R.drawable.downtime);
 
         // Set-up variables related to current time
         long millis = System.currentTimeMillis();
@@ -128,35 +219,7 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
         schedSpinner.setAdapter(typeAdapter);
     }*/
 
-    public void setNotification(Plan plan, int index) {
-        // Set up the time for notification
-        Calendar calendar = Calendar.getInstance();
-        double diff = plan.getStartTime() - ((int) plan.getStartTime());
-        int minutes = (int) ((diff * 60) + 0.5);
-        int currentDay = Calendar.DAY_OF_MONTH;
-        if (index == 0) {
-            currentDay--;
-        } else if (index == 2) {
-            currentDay++;
-        }
-        calendar.set(Calendar.DAY_OF_MONTH, currentDay);
-        calendar.set(Calendar.HOUR_OF_DAY, (int) (plan.getStartTime())); 
-        calendar.set(Calendar.MINUTE, minutes); 
-        calendar.set(Calendar.SECOND, 0); 
-        calendar.set(Calendar.MILLISECOND, 0); /
 
-        // Only deploy notification if it's in future, not past
-        if (calendar.getTimeInMillis() > System.currentTimeMillis()) {
-            alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-            String[] encouragements = {"Keep up the good work!", "Your next activity on the schedule's starting now!", "One more plan to do!"};
-            Intent alarmIntent = new Intent(getApplicationContext(), Navigator.class);
-            alarmIntent.putExtra("Title", plan.getName());
-            alarmIntent.putExtra("Content", encouragements[(int) (Math.random() * 3)]);
-            alarmIntent.putExtra("Icon", typeToIcon.get(plan.getType()));
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        }
-    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -248,78 +311,7 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
 
     }
 
-    // Animation to move the fragment within view
-    private void moveFrag() {
-        FragmentContainerView view = this.findViewById(R.id.infoView);
-        Animation move = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.tween);
-        view.setVisibility(View.VISIBLE);
-        view.startAnimation(move);
-        view.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                view.clearAnimation();
-            }
-        }, 500);
-    }
 
-    public void promptInfo(Plan plan) {
-        SharedPreferences settings = this.getApplicationContext().getSharedPreferences("Settings", Context.MODE_PRIVATE);
-        boolean valid = settings.getBoolean("ShowOutsideInfo", false);
-        if (valid) {
-            // Define elements
-            FragmentContainerView view = this.findViewById(R.id.infoView);
-            Button infoButton = view.findViewById(R.id.InfoButton);
-            Button vidButton = view.findViewById(R.id.VideoButton);
-            TextView title = view.findViewById(R.id.SelectedNameText);
-            TextView timeRange = view.findViewById(R.id.SelectedTimeRange);
-            TextView planText = view.findViewById(R.id.SelectedTypeText);
-
-            // Change properties of elements to reflect current plan being viewed
-            CharSequence newPlanText = "(" + plan.getType() + ")";
-            CharSequence newInfoText = "Find Info on: '" + plan.getName() + "' in general";
-            CharSequence newVidText = "Find Videos on: '" + plan.getName() + "'";
-
-            title.setText(plan.getName());
-            timeRange.setText(plan.convertToTimestamp());
-            planText.setText(newPlanText);
-            infoButton.setText(newInfoText);
-            vidButton.setText(newVidText);
-
-            view.setVisibility(View.VISIBLE);
-            moveFrag();
-            // Send user to specific Google query when prompted
-            infoButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                   goToLink(plan, "https://google.com/search?q=");
-                }
-            });
-            vidButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    goToLink(plan, "https://youtube.com/search?q=");
-                }
-            }
-    }
-
-    // Send them to link with intent
-    private void goToLink(Plan plan, Uri url) {
-        try {
-
-                            String query = plan.getName();
-                            if (plan.getType() != "Special!" && plan.getType() != "Other") {
-                                query = query + " and " + plan.getType();
-                            }
-                            Uri link = Uri.parse(url+ query);
-                            Intent infoIntent = new Intent(Intent.ACTION_VIEW, link);
-                            infoIntent.putExtra(SearchManager.QUERY, query);
-                            startActivity(infoIntent);
-                        } catch (ActivityNotFoundException data) {
-                            data.printStackTrace();
-                        }
-    }
-
-    // Method that shows schedule based on date selected
     @Override
     public void onClick(View v) {
         currentlySelectedButton = (Button) v;
@@ -346,7 +338,7 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
         // Grab data for schedule on that date
         String formattedDate = dateList[index].toString().substring(0, 10);
         String serializedSched = preferences.getString(formattedDate, "N/A");
-        
+
         if (serializedSched.equals("N/A")) { // Display no schedule found elements, allow for user to pick
             fragView.setVisibility(View.GONE);
             noSchedLayout.setVisibility(View.VISIBLE);
@@ -357,32 +349,33 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
                 schedSpinner.setAdapter(typeAdapter);
 
                 // Update data for schedule on said data with input
-                schedSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                Button confirmButton = this.findViewById(R.id.confirmButton);
+                confirmButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        String val = "";
+                    public void onClick(View v) {
+                        if (schedSpinner.getSelectedItem() != null) {
+                            String val = "";
 
-                        if (currentlySelectedButton == todayButton)
-                            val = today.toString().substring(0, 10);
-                        else if (currentlySelectedButton == yesterdayButton)
-                            val = yesterday.toString().substring(0, 10);
-                        else
-                            val = tomorrow.toString().substring(0, 10);
-                        editor = preferences.edit();
-                        editor.putString(val, fullPreferences.getString((String) parent.getItemAtPosition(position), null));
-                        editor.commit();
-                        onClick(currentlySelectedButton);
+                            if (currentlySelectedButton == todayButton)
+                                val = today.toString().substring(0, 10);
+                            else if (currentlySelectedButton == yesterdayButton)
+                                val = yesterday.toString().substring(0, 10);
+                            else
+                                val = tomorrow.toString().substring(0, 10);
+                            editor = preferences.edit();
+                            editor.putString(val, fullPreferences.getString((String) schedSpinner.getSelectedItem(), null));
+                            editor.commit();
+                            toClick(currentlySelectedButton);
+                        }
                     }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {}
                 });
+
             }
         } else { // If there's data, display it
             noSchedLayout.setVisibility(View.GONE);
             fragView.setVisibility(View.VISIBLE);
 
-            Schedule deserialized = new Schedule("New", this.getApplicationContext(),this);
+            Schedule deserialized = new Schedule("New", this.getApplicationContext());
             currentSchedule = deserialized;
             deserialized.deserialize(serializedSched);
             deserialized.updateFragment(buttonList1, textList1, layoutList1);
@@ -394,5 +387,9 @@ public class MainActivity3 extends AppCompatActivity implements View.OnClickList
                 }
             }
         }
+    }
+
+    private void toClick(Button button) {
+        onClick(button);
     }
 }

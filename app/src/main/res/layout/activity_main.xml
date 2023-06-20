@@ -18,15 +18,15 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="450dp"
-            android:layout_height="392dp"
+            android:layout_width="324dp"
+            android:layout_height="291dp"
             android:layout_gravity="center"
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="8dp"
             android:contentDescription="Logo for the ClockIn application."
-            android:src="@drawable/copy_of_for_glory"
-            app:srcCompat="@drawable/copy_of_for_glory" />
+            android:src="@drawable/cutmypic__4_"
+            app:srcCompat="@drawable/cutmypic__4_" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -45,14 +45,16 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
+                android:id="@+id/textView3"
+                android:layout_width="375dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="casual"
                 android:text="#TakeYourTime"
                 android:textAlignment="center"
-                android:textColor="#1E1E1E"
-                android:textSize="48sp" />
+                android:textColor="#C4000000"
+                android:textSize="48sp"
+                android:textStyle="bold|italic"
+                android:typeface="normal" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -67,6 +69,7 @@
                 android:id="@+id/textView7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="-10dp"
                 android:fontFamily="serif"
                 android:text="——————————"
                 android:textAlignment="center"

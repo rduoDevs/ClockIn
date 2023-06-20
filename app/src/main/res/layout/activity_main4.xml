@@ -57,6 +57,17 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/NoScheduleText"
+            android:layout_width="246dp"
+            android:layout_height="67dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="You have no schedules! Create your first one now!"
+            android:textColor="#222222"
+            android:textSize="20sp"
+            tools:visibility="gone" />
+
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerView3"
             android:name="com.example.clockitcurrent.Test"
