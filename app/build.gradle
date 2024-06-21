@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.clockitcurrent'
+    namespace 'com.clockinscheduler.clockitcurrent'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.clockitcurrent"
+        applicationId "com.clockinscheduler.clockitcurrent"
         minSdk 24
         targetSdk 33
         versionCode 1

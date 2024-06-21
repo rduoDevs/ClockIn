@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity4">
+    tools:context="com.clockinscheduler.clockitcurrent.MainActivity4">
 
     <LinearLayout
         android:layout_width="391dp"
@@ -70,7 +70,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerView3"
-            android:name="com.example.clockitcurrent.Test"
+            android:name="com.clockinscheduler.clockitcurrent.Test"
             android:layout_width="match_parent"
             android:layout_height="345dp"
             tools:layout="@layout/fragment_test" />
@@ -104,7 +104,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/infoView2"
-        android:name="com.example.clockitcurrent.InformationFragment"
+        android:name="com.clockinscheduler.clockitcurrent.InformationFragment"
         android:layout_width="match_parent"
         android:layout_height="319dp"
         android:visibility="gone"

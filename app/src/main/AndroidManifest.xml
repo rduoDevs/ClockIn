@@ -19,19 +19,19 @@
         android:theme="@style/Theme.ClockItCurrent"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity5"
+            android:name="com.clockinscheduler.clockitcurrent.MainActivity5"
             android:exported="false" />
         <activity
-            android:name=".MainActivity4"
+            android:name="com.clockinscheduler.clockitcurrent.MainActivity4"
             android:exported="false" />
         <activity
-            android:name=".MainActivity3"
+            android:name="com.clockinscheduler.clockitcurrent.MainActivity3"
             android:exported="false" />
         <activity
-            android:name=".MainActivity2"
+            android:name="com.clockinscheduler.clockitcurrent.MainActivity2"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.clockinscheduler.clockitcurrent.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

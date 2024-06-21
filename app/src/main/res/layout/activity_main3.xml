@@ -7,7 +7,7 @@
     android:backgroundTint="#D6D6D6"
     android:textAlignment="textEnd"
     app:layout_anchorGravity="center"
-    tools:context=".MainActivity3">
+    tools:context="com.clockinscheduler.clockitcurrent.MainActivity3">
 
 
     <LinearLayout
@@ -101,7 +101,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerView"
-            android:name="com.example.clockitcurrent.Test"
+            android:name="com.clockinscheduler.clockitcurrent.Test"
             android:layout_width="348dp"
             android:layout_height="423dp"
             tools:layout="@layout/fragment_test"
@@ -184,7 +184,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/infoView"
-        android:name="com.example.clockitcurrent.InformationFragment"
+        android:name="com.clockinscheduler.clockitcurrent.InformationFragment"
         android:layout_width="match_parent"
         android:layout_height="319dp"
         android:visibility="gone"

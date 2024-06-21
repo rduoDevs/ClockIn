@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".MainActivity5">
+    tools:context="com.clockinscheduler.clockitcurrent.MainActivity5">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/newScheduleContainer"
-        android:name="com.example.clockitcurrent.Test"
+        android:name="com.clockinscheduler.clockitcurrent.Test"
         android:layout_width="368dp"
         android:layout_height="134dp"
         android:foregroundGravity="center"

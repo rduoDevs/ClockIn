@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.core.app.NotificationCompat;
-import com.example.clockitcurrent.R;
+import com.clockinscheduler.clockitcurrent.R;
 
 public class Navigator extends BroadcastReceiver {
     @Override
